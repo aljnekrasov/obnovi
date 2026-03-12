@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОБНОВИ — Для бизнеса | Интерьерная плёнка для кафе, клубов и коммерческих пространств</title>
+<meta name="description" content="Обновите интерьер кафе, ресторана, кальянной, клуба или спортзала без капитального ремонта. Декоративная плёнка ОБНОВИ — быстро, бюджетно, эффектно.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: #FFFCF8; color: #1A1816; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+::selection { background: #1A1816; color: #F5F0EB; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+input, select, textarea { font-family: inherit; outline: none; }
+
+:root {
+  --cream: #FFFCF8;
+  --warm: #F5F0EB;
+  --dark: #1A1816;
+  --wood: #8B6F47;
+  --wood-deep: #5C4033;
+  --text-muted: rgba(26,24,22,0.6);
+  --text-faint: rgba(26,24,22,0.4);
+  --border: rgba(26,24,22,0.06);
+  --border-input: #E0DAD3;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+}
+
+.font-display { font-family: 'Playfair Display', serif; }
+.font-mono { font-family: 'DM Mono', monospace; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideUpSm { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  30% { transform: translate(3%, -15%); }
+  50% { transform: translate(-15%, 5%); }
+  70% { transform: translate(12%, 10%); }
+  90% { transform: translate(-8%, 15%); }
+}
+
+.animate-slide-up { animation: slideUp .8s ease-out both; }
+.animate-slide-up-d1 { animation: slideUp .8s ease-out .1s both; }
+.animate-slide-up-d2 { animation: slideUp .8s ease-out .2s both; }
+.animate-slide-up-d3 { animation: slideUp .8s ease-out .3s both; }
+
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-d1 { transition-delay: .1s; }
+.reveal-d2 { transition-delay: .2s; }
+.reveal-d3 { transition-delay: .3s; }
+.reveal-d4 { transition-delay: .35s; }
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 0 24px; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background .35s, border-color .35s, backdrop-filter .35s;
+}
+.nav.scrolled {
+  background: rgba(255,252,248,0.92);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-weight: 700; font-size: 18px; letter-spacing: 0.08em; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-link { font-size: 13px; font-weight: 500; letter-spacing: 0.02em; opacity: 0.6; transition: opacity .2s; }
+.nav-link:hover { opacity: 1; }
+.nav-cta {
+  padding: 10px 20px; background: var(--dark); color: var(--warm);
+  border-radius: 8px; font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+  transition: transform .2s, box-shadow .2s;
+}
+.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,.1); }
+.nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+.nav-burger span { display: block; width: 22px; height: 2px; background: var(--dark); border-radius: 2px; transition: all .3s; }
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+  .nav-links.open {
+    display: flex; flex-direction: column;
+    position: absolute; top: 64px; left: 0; right: 0;
+    background: rgba(255,252,248,0.97); backdrop-filter: blur(14px);
+    padding: 24px; gap: 20px;
+    border-bottom: 1px solid var(--border);
+    animation: slideUpSm .3s ease-out;
+  }
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh; display: flex; align-items: center;
+  padding: 120px 24px 80px; position: relative; overflow: hidden;
+}
+.hero-grain {
+  position: absolute; inset: -50%; z-index: 1; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  animation: grain 8s steps(10) infinite;
+}
+.hero-blob-1 {
+  position: absolute; top: -20%; right: -10%; width: 600px; height: 600px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(139,111,71,0.15) 0%, transparent 70%);
+  filter: blur(60px); pointer-events: none;
+}
+.hero-blob-2 {
+  position: absolute; bottom: -10%; left: -5%; width: 500px; height: 500px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(92,64,51,0.1) 0%, transparent 70%);
+  filter: blur(50px); pointer-events: none;
+}
+.hero-inner { max-width: 1120px; margin: 0 auto; position: relative; z-index: 2; width: 100%; }
+.hero-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 16px; }
+.hero-title { font-size: clamp(38px, 6vw, 68px); font-weight: 600; line-height: 1.1; margin-bottom: 28px; letter-spacing: -0.02em; max-width: 800px; }
+.hero-title em { font-style: italic; color: var(--wood); }
+.hero-subtitle { font-size: 18px; line-height: 1.7; color: var(--text-muted); max-width: 600px; margin-bottom: 40px; }
+.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+.btn-primary {
+  display: inline-flex; align-items: center; padding: 16px 32px;
+  background: var(--dark); color: var(--warm); border-radius: var(--radius);
+  font-size: 16px; font-weight: 600; transition: transform .2s, box-shadow .2s;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,.12); }
+.btn-outline {
+  display: inline-flex; align-items: center; padding: 16px 32px;
+  border: 1.5px solid rgba(26,24,22,0.15); border-radius: var(--radius);
+  font-size: 16px; font-weight: 500; transition: border-color .2s;
+}
+.btn-outline:hover { border-color: rgba(26,24,22,0.4); }
+
+/* ── SECTIONS ── */
+.section { padding: 100px 24px; position: relative; overflow: hidden; }
+.section--dark { background: var(--dark); color: var(--warm); }
+.section--warm { background: var(--warm); }
+.section-inner { max-width: 1120px; margin: 0 auto; position: relative; z-index: 2; }
+.section-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 16px; }
+.section-label--light { color: rgba(245,240,235,0.5); }
+.section-label--dark { color: var(--text-faint); }
+.heading { font-size: clamp(32px, 5vw, 52px); font-weight: 600; line-height: 1.15; margin: 0; }
+.heading--light { color: var(--warm); }
+
+/* ── USE CASES ── */
+.cases-intro { font-size: 18px; line-height: 1.7; color: var(--text-muted); max-width: 600px; margin-bottom: 56px; }
+.cases-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+.case-card {
+  border-radius: var(--radius-lg); overflow: hidden;
+  border: 1px solid var(--border); transition: transform .3s, box-shadow .3s;
+}
+.case-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,.06); }
+.case-thumb {
+  height: 180px; display: flex; align-items: center; justify-content: center;
+}
+.case-thumb-icon { font-size: 48px; }
+.case-body { padding: 24px; }
+.case-title { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+.case-desc { font-size: 14px; line-height: 1.7; color: var(--text-muted); margin-bottom: 16px; }
+.case-surfaces { display: flex; gap: 8px; flex-wrap: wrap; }
+.case-tag {
+  padding: 4px 12px; border-radius: 6px; font-size: 11px; letter-spacing: 0.05em;
+  background: var(--warm); color: var(--text-muted);
+}
+
+/* ── ADVANTAGES ── */
+.adv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 24px; }
+.adv-card {
+  background: rgba(245,240,235,0.05); border-radius: var(--radius-lg); padding: 36px 28px;
+  border: 1px solid rgba(245,240,235,0.08); transition: background .3s;
+}
+.adv-card:hover { background: rgba(245,240,235,0.08); }
+.adv-num { font-size: 40px; font-weight: 600; color: var(--wood); margin-bottom: 16px; }
+.adv-title { font-size: 18px; font-weight: 600; margin-bottom: 10px; color: var(--warm); }
+.adv-desc { font-size: 14px; line-height: 1.7; color: rgba(245,240,235,0.55); }
+
+/* ── PROCESS ── */
+.process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 24px; }
+.process-card {
+  background: #fff; border-radius: var(--radius-lg); padding: 36px 28px;
+  border: 1px solid var(--border); transition: transform .3s, box-shadow .3s;
+}
+.process-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,.06); }
+.process-num { font-size: 40px; font-weight: 600; color: rgba(26,24,22,0.08); margin-bottom: 20px; }
+.process-title { font-size: 18px; font-weight: 600; margin-bottom: 10px; }
+.process-desc { font-size: 14px; line-height: 1.7; color: var(--text-muted); }
+
+/* ── FORM ── */
+.form-section-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+@media (max-width: 800px) { .form-section-grid { grid-template-columns: 1fr; } }
+.form-info p { font-size: 15px; line-height: 1.7; color: var(--text-muted); margin-bottom: 24px; }
+.form-perks { display: flex; flex-direction: column; gap: 14px; }
+.form-perk { display: flex; align-items: flex-start; gap: 12px; }
+.form-perk-icon { color: var(--wood); font-size: 16px; line-height: 1.5; flex-shrink: 0; }
+.form-perk-text { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+
+.project-form {
+  background: var(--warm); border-radius: var(--radius-xl); padding: 40px 36px;
+  border: 1px solid var(--border);
+}
+.project-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 14px; }
+.pf-input {
+  padding: 14px 18px; background: #fff;
+  border: 1.5px solid var(--border-input);
+  border-radius: 10px; color: var(--dark); font-size: 14px;
+  transition: border-color .2s; width: 100%;
+}
+.pf-input::placeholder { color: var(--text-faint); }
+.pf-input:focus { border-color: var(--wood); }
+.pf-select { appearance: auto; margin-bottom: 14px; }
+.pf-textarea {
+  padding: 14px 18px; background: #fff;
+  border: 1.5px solid var(--border-input);
+  border-radius: 10px; color: var(--dark); font-size: 14px;
+  transition: border-color .2s; width: 100%;
+  resize: vertical; min-height: 80px; margin-bottom: 20px;
+}
+.pf-textarea::placeholder { color: var(--text-faint); }
+.pf-textarea:focus { border-color: var(--wood); }
+.pf-submit {
+  width: 100%; padding: 16px; background: var(--dark); color: var(--warm);
+  border-radius: var(--radius); font-size: 15px; font-weight: 600;
+  transition: transform .2s, box-shadow .2s;
+}
+.pf-submit:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,.12); }
+.form-success { text-align: center; padding: 48px; }
+.form-success-icon { font-size: 48px; margin-bottom: 12px; color: var(--wood); }
+.form-success h3 { font-size: 22px; margin-bottom: 8px; }
+.form-success p { font-size: 14px; color: var(--text-muted); }
+
+/* ── CTA BAND ── */
+.cta-band {
+  background: linear-gradient(135deg, var(--wood) 0%, var(--wood-deep) 100%);
+  border-radius: var(--radius-2xl); padding: 64px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 32px;
+}
+.cta-band h3 { font-size: 32px; color: var(--warm); margin-bottom: 12px; }
+.cta-band p { font-size: 15px; color: rgba(245,240,235,0.7); max-width: 400px; }
+
+/* ── FOOTER ── */
+.footer { padding: 48px 24px; border-top: 1px solid var(--border); }
+.footer-inner {
+  max-width: 1120px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+}
+.footer-logo { font-weight: 700; font-size: 16px; letter-spacing: 0.08em; }
+.footer-copy { font-size: 13px; color: var(--text-faint); }
+.footer-socials { display: flex; gap: 24px; }
+.footer-socials a { font-size: 13px; color: rgba(26,24,22,0.5); transition: color .2s; }
+.footer-socials a:hover { color: var(--dark); }
+</style>
+</head>
+<body>
+
+<!-- ════════════ NAV ════════════ -->
+<nav class="nav" id="nav">
+  <a href="index.html" class="nav-logo">ОБНОВИ</a>
+  <div class="nav-links" id="navLinks">
+    <a href="#cases" class="nav-link">Кому подходит</a>
+    <a href="#advantages" class="nav-link">Преимущества</a>
+    <a href="#process" class="nav-link">Как работаем</a>
+    <a href="#form" class="nav-cta">Обсудить проект</a>
+  </div>
+  <div class="nav-burger" id="burger" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ════════════ HERO ════════════ -->
+<section class="hero">
+  <div class="hero-grain"></div>
+  <div class="hero-blob-1"></div>
+  <div class="hero-blob-2"></div>
+  <div class="hero-inner">
+    <div class="hero-label font-mono animate-slide-up">Для коммерческих пространств</div>
+    <h1 class="hero-title font-display animate-slide-up-d1">
+      Новый интерьер для вашего бизнеса — <em>без ремонта</em>
+    </h1>
+    <p class="hero-subtitle animate-slide-up-d2">
+      Обновите кафе, ресторан, кальянную, клуб или спортзал за 1–3 дня. Декоративная плёнка ОБНОВИ — дешевле ремонта в 5–10 раз, без остановки работы заведения.
+    </p>
+    <div class="hero-actions animate-slide-up-d3">
+      <a href="#form" class="btn-primary">Обсудить проект</a>
+      <a href="index.html" class="btn-outline">На главную →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ USE CASES ════════════ -->
+<section class="section" id="cases">
+  <div class="section-inner">
+    <div class="section-label section-label--dark font-mono reveal">Кому подходит</div>
+    <h2 class="heading font-display reveal" style="margin-bottom:16px;">Пространства, которые мы обновляем</h2>
+    <p class="cases-intro reveal">Плёнка ОБНОВИ подходит для любых коммерческих интерьеров — от барной стойки до стен спортзала.</p>
+    <div class="cases-grid" id="casesGrid"></div>
+  </div>
+</section>
+
+<!-- ════════════ ADVANTAGES ════════════ -->
+<section class="section section--dark" id="advantages">
+  <div class="section-inner">
+    <div class="section-label section-label--light font-mono reveal">Почему плёнка</div>
+    <h2 class="heading heading--light font-display reveal" style="margin-bottom:60px;">Преимущества перед ремонтом</h2>
+    <div class="adv-grid" id="advGrid"></div>
+  </div>
+</section>
+
+<!-- ════════════ PROCESS ════════════ -->
+<section class="section" id="process">
+  <div class="section-inner">
+    <div class="section-label section-label--dark font-mono reveal">Процесс</div>
+    <h2 class="heading font-display reveal" style="margin-bottom:60px;">Как устроена работа</h2>
+    <div class="process-grid" id="processGrid"></div>
+  </div>
+</section>
+
+<!-- ════════════ FORM ════════════ -->
+<section class="section section--warm" id="form">
+  <div class="section-inner">
+    <div class="form-section-grid">
+      <div class="form-info reveal">
+        <div class="section-label section-label--dark font-mono">Заявка</div>
+        <h2 class="heading font-display" style="margin-bottom:16px;">Обсудим ваш проект</h2>
+        <p>Расскажите о пространстве — мы подберём текстуры, рассчитаем объём материала и предложим оптимальное решение. Бесплатная консультация и образцы.</p>
+        <div class="form-perks">
+          <div class="form-perk"><span class="form-perk-icon">◆</span><span class="form-perk-text">Бесплатный расчёт за 24 часа</span></div>
+          <div class="form-perk"><span class="form-perk-icon">◆</span><span class="form-perk-text">Образцы текстур под ваш интерьер</span></div>
+          <div class="form-perk"><span class="form-perk-icon">◆</span><span class="form-perk-text">Рекомендации по нанесению или монтаж</span></div>
+          <div class="form-perk"><span class="form-perk-icon">◆</span><span class="form-perk-text">Скидки на объём от 20 рулонов</span></div>
+        </div>
+      </div>
+      <div class="reveal reveal-d2" id="projectFormWrap"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ CTA BAND ════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <div class="cta-band reveal">
+      <div>
+        <h3 class="font-display">Оптовые поставки для сетей</h3>
+        <p>Управляете сетью заведений? Посмотрите условия для партнёров — отгрузка от 50 рулонов, отсрочка, персональный менеджер</p>
+      </div>
+      <a href="b2b.html" class="btn-primary" style="background:var(--warm); color:var(--dark);">Партнёрам →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ FOOTER ════════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <span class="footer-logo">ОБНОВИ</span>
+    <span class="footer-copy">© 2026 ОБНОВИ. Все права защищены.</span>
+    <div class="footer-socials">
+      <a href="#">Telegram</a>
+      <a href="#">WhatsApp</a>
+      <a href="#">Instagram</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ════════════ JAVASCRIPT ════════════ -->
+<script>
+const CASES = [
+  {
+    icon: "☕", title: "Кафе и рестораны",
+    color: "#8B6F47", accent: "#D4A574",
+    desc: "Барные стойки, столешницы, стены, фасады кухонной мебели. Обновите зал или летнюю веранду между сезонами — без закрытия заведения.",
+    surfaces: ["Барная стойка", "Столешницы", "Стены", "Фасады"]
+  },
+  {
+    icon: "💨", title: "Кальянные и лаунж-бары",
+    color: "#5C4033", accent: "#8B6F47",
+    desc: "Создайте атмосферу с текстурами тёмного дерева, камня или бетона. Плёнка устойчива к влаге и легко моется — идеально для зон с дымом.",
+    surfaces: ["Стены", "Стойки", "Столы", "Перегородки"]
+  },
+  {
+    icon: "🎵", title: "Клубы и бары",
+    color: "#2A2A2A", accent: "#444",
+    desc: "Матовый чёрный, тёмные текстуры камня, контрастные акценты. Быстрая смена оформления под тематические вечеринки или ребрендинг.",
+    surfaces: ["DJ-зона", "Бар", "Стены", "Мебель"]
+  },
+  {
+    icon: "🏋️", title: "Спортклубы и студии",
+    color: "#9E9E9E", accent: "#757575",
+    desc: "Ресепшн, раздевалки, зоны отдыха. Плёнка выдерживает активную эксплуатацию, легко обновляется при износе отдельных участков.",
+    surfaces: ["Ресепшн", "Раздевалки", "Шкафчики", "Стены"]
+  },
+  {
+    icon: "🏨", title: "Отели и хостелы",
+    color: "#C9A5A0", accent: "#A07A74",
+    desc: "Обновите номерной фонд без капитального ремонта: двери, шкафы, столы, подоконники. Один номер — за 2–3 часа.",
+    surfaces: ["Двери", "Шкафы", "Тумбы", "Подоконники"]
+  },
+  {
+    icon: "✏️", title: "Коворкинги и офисы",
+    color: "#C8B99A", accent: "#A89878",
+    desc: "Переговорные, ресепшн, кухня. Текстуры дерева и камня создают премиальную атмосферу при минимальных затратах.",
+    surfaces: ["Ресепшн", "Переговорные", "Кухня", "Стены"]
+  },
+];
+
+const ADVANTAGES = [
+  { num:"5–10×", title:"Дешевле ремонта", desc:"Стоимость оклейки одной поверхности — от 500 ₽/м². Капитальный ремонт той же площади обойдётся в 5–10 раз дороже." },
+  { num:"1–3", title:"Дня на весь проект", desc:"Стандартное кафе оклеивается за 1–3 дня. Капитальный ремонт — от 2 недель до нескольких месяцев." },
+  { num:"0", title:"Дней простоя", desc:"Оклейка возможна в нерабочие часы — ночью или в выходные. Заведение не теряет выручку на время ремонта." },
+  { num:"5+", title:"Лет срок службы", desc:"Плёнка держится от 5 лет при соблюдении рекомендаций. При износе отдельного участка — переклейте только его, а не всю поверхность." },
+];
+
+const PROCESS_STEPS = [
+  { num:"01", title:"Заявка и консультация", desc:"Расскажите о пространстве: тип заведения, какие поверхности нужно обновить, желаемые текстуры. Мы бесплатно проконсультируем." },
+  { num:"02", title:"Расчёт и образцы", desc:"Рассчитаем объём материала, предложим текстуры под ваш интерьер и отправим бесплатные образцы для примерки." },
+  { num:"03", title:"Поставка", desc:"Отгрузим материал со склада в Москве за 1–3 дня. Для Москвы и МО — доставка на следующий день." },
+  { num:"04", title:"Нанесение", desc:"Оклейте поверхности самостоятельно по нашей инструкции или закажите монтаж у наших рекомендованных мастеров." },
+];
+
+// ── NAV ──
+let menuOpen = false;
+function toggleNav() {
+  menuOpen = !menuOpen;
+  document.getElementById('navLinks').classList.toggle('open', menuOpen);
+}
+document.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', () => {
+  menuOpen = false;
+  document.getElementById('navLinks').classList.remove('open');
+}));
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ── USE CASES ──
+function renderCases() {
+  document.getElementById('casesGrid').innerHTML = CASES.map((c, i) => `
+    <div class="case-card reveal ${i > 0 ? 'reveal-d' + Math.min(i, 4) : ''}">
+      <div class="case-thumb" style="background:linear-gradient(135deg, ${c.color} 0%, ${c.accent} 100%);">
+        <span class="case-thumb-icon">${c.icon}</span>
+      </div>
+      <div class="case-body">
+        <h3 class="case-title">${c.title}</h3>
+        <p class="case-desc">${c.desc}</p>
+        <div class="case-surfaces">
+          ${c.surfaces.map(s => `<span class="case-tag font-mono">${s}</span>`).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── ADVANTAGES ──
+function renderAdvantages() {
+  document.getElementById('advGrid').innerHTML = ADVANTAGES.map((a, i) => `
+    <div class="adv-card reveal ${i > 0 ? 'reveal-d' + i : ''}">
+      <div class="adv-num font-display">${a.num}</div>
+      <h3 class="adv-title">${a.title}</h3>
+      <p class="adv-desc">${a.desc}</p>
+    </div>
+  `).join('');
+}
+
+// ── PROCESS ──
+function renderProcess() {
+  document.getElementById('processGrid').innerHTML = PROCESS_STEPS.map((s, i) => `
+    <div class="process-card reveal ${i > 0 ? 'reveal-d' + i : ''}">
+      <div class="process-num font-display">${s.num}</div>
+      <h3 class="process-title">${s.title}</h3>
+      <p class="process-desc">${s.desc}</p>
+    </div>
+  `).join('');
+}
+
+// ── PROJECT FORM ──
+let formSent = false;
+function renderForm() {
+  const wrap = document.getElementById('projectFormWrap');
+  if (formSent) {
+    wrap.innerHTML = `
+      <div class="project-form form-success">
+        <div class="form-success-icon">✓</div>
+        <h3 class="font-display">Заявка отправлена</h3>
+        <p>Менеджер свяжется с вами в течение рабочего дня и подготовит расчёт</p>
+      </div>`;
+    return;
+  }
+  wrap.innerHTML = `
+    <div class="project-form">
+      <div class="project-form-grid">
+        <input class="pf-input" type="text" placeholder="Имя" id="pfName">
+        <input class="pf-input" type="tel" placeholder="Телефон" id="pfPhone">
+      </div>
+      <input class="pf-input" type="text" placeholder="Город" id="pfCity" style="margin-bottom:14px;">
+      <select class="pf-input pf-select" id="pfType">
+        <option value="" disabled selected>Тип заведения</option>
+        <option value="cafe">Кафе / Ресторан</option>
+        <option value="hookah">Кальянная / Лаунж</option>
+        <option value="club">Клуб / Бар</option>
+        <option value="gym">Спортклуб / Студия</option>
+        <option value="hotel">Отель / Хостел</option>
+        <option value="office">Коворкинг / Офис</option>
+        <option value="other">Другое</option>
+      </select>
+      <select class="pf-input pf-select" id="pfArea">
+        <option value="" disabled selected>Примерная площадь оклейки</option>
+        <option value="<10">До 10 м²</option>
+        <option value="10-30">10–30 м²</option>
+        <option value="30-100">30–100 м²</option>
+        <option value="100+">Больше 100 м²</option>
+      </select>
+      <textarea class="pf-textarea" placeholder="Что хотите обновить? (барная стойка, стены, мебель...)" id="pfComment"></textarea>
+      <button class="pf-submit" onclick="submitForm()">Получить расчёт</button>
+    </div>`;
+}
+
+function submitForm() {
+  const name = document.getElementById('pfName').value;
+  const phone = document.getElementById('pfPhone').value;
+  if (name && phone) {
+    const data = {
+      name,
+      phone,
+      city: document.getElementById('pfCity').value,
+      type: document.getElementById('pfType').value,
+      area: document.getElementById('pfArea').value,
+      comment: document.getElementById('pfComment').value,
+      source: 'project_form',
+      timestamp: new Date().toISOString()
+    };
+    console.log('Project lead:', data);
+    formSent = true;
+    renderForm();
+  }
+}
+
+// ── SCROLL REVEAL ──
+function observeReveals() {
+  const els = document.querySelectorAll('.reveal:not(.visible)');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  els.forEach(el => observer.observe(el));
+}
+
+// ── INIT ──
+renderCases();
+renderAdvantages();
+renderProcess();
+renderForm();
+observeReveals();
+</script>
+</body>
+</html>
