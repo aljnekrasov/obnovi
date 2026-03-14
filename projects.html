@@ -3,6 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js', 'ym');
+    ym(98506868, 'init', {webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/98506868" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 <title>ОБНОВИ — Для бизнеса | Интерьерная плёнка для кафе, клубов и коммерческих пространств</title>
 <meta name="description" content="Обновите интерьер кафе, ресторана, кальянной, клуба или спортзала без капитального ремонта. Декоративная плёнка ОБНОВИ — быстро, бюджетно, эффектно.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -266,9 +278,9 @@ input, select, textarea { font-family: inherit; outline: none; }
 <nav class="nav" id="nav">
   <a href="index.html" class="nav-logo">ОБНОВИ</a>
   <div class="nav-links" id="navLinks">
-    <a href="#cases" class="nav-link">Кому подходит</a>
-    <a href="#advantages" class="nav-link">Преимущества</a>
-    <a href="#process" class="nav-link">Как работаем</a>
+    <a href="index.html" class="nav-link">Покупателям</a>
+    <a href="projects.html" class="nav-link" style="opacity:1;">Бизнесу и дизайнерам</a>
+    <a href="b2b.html" class="nav-link">Закупкам</a>
     <a href="#form" class="nav-cta">Обсудить проект</a>
   </div>
   <div class="nav-burger" id="burger" onclick="toggleNav()">
@@ -398,14 +410,32 @@ const CASES = [
     surfaces: ["Ресепшн", "Раздевалки", "Шкафчики", "Стены"]
   },
   {
-    icon: "🏨", title: "Отели и хостелы",
+    icon: "💇", title: "Салоны красоты и массаж",
     color: "#C9A5A0", accent: "#A07A74",
+    desc: "Стойка ресепшн, стены кабинетов, зона ожидания. Создайте атмосферу уюта и чистоты текстурами светлого дерева или мрамора — клиенты оценят.",
+    surfaces: ["Ресепшн", "Стены", "Шкафы", "Кабинеты"]
+  },
+  {
+    icon: "📷", title: "Фотостудии",
+    color: "#C8B99A", accent: "#A89878",
+    desc: "Фоны, стены циклорам, декоративные панели. Меняйте текстуры под разные съёмки — плёнка наклеивается и снимается без следов.",
+    surfaces: ["Фоны", "Стены", "Панели", "Мебель"]
+  },
+  {
+    icon: "🎨", title: "Декораторы и оформители",
+    color: "#E5DDD3", accent: "#C4A882",
+    desc: "Оформление мероприятий, выставок, шоурумов и витрин. Плёнка — быстрый способ преобразить пространство для фотозон, стендов и инсталляций.",
+    surfaces: ["Фотозоны", "Стенды", "Витрины", "Декор"]
+  },
+  {
+    icon: "🏨", title: "Отели и хостелы",
+    color: "#5C4033", accent: "#8B6F47",
     desc: "Обновите номерной фонд без капитального ремонта: двери, шкафы, столы, подоконники. Один номер — за 2–3 часа.",
     surfaces: ["Двери", "Шкафы", "Тумбы", "Подоконники"]
   },
   {
     icon: "✏️", title: "Коворкинги и офисы",
-    color: "#C8B99A", accent: "#A89878",
+    color: "#2A2A2A", accent: "#444",
     desc: "Переговорные, ресепшн, кухня. Текстуры дерева и камня создают премиальную атмосферу при минимальных затратах.",
     surfaces: ["Ресепшн", "Переговорные", "Кухня", "Стены"]
   },
@@ -505,6 +535,9 @@ function renderForm() {
         <option value="hookah">Кальянная / Лаунж</option>
         <option value="club">Клуб / Бар</option>
         <option value="gym">Спортклуб / Студия</option>
+        <option value="beauty">Салон красоты / Массаж</option>
+        <option value="photo">Фотостудия</option>
+        <option value="decor">Декоратор / Оформитель</option>
         <option value="hotel">Отель / Хостел</option>
         <option value="office">Коворкинг / Офис</option>
         <option value="other">Другое</option>

@@ -3,6 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js', 'ym');
+    ym(98506868, 'init', {webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/98506868" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 <title>ОБНОВИ — Партнёрам | Оптовые поставки интерьерной плёнки</title>
 <meta name="description" content="Оптовые поставки декоративной интерьерной плёнки ОБНОВИ. Маржинальность от 40%, бесплатные образцы, персональный менеджер. От 50 рулонов.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -287,10 +299,9 @@ input, select { font-family: inherit; outline: none; }
 <nav class="nav" id="nav">
   <a href="index.html" class="nav-logo">ОБНОВИ</a>
   <div class="nav-links" id="navLinks">
-    <a href="#benefits" class="nav-link">Преимущества</a>
-    <a href="#process" class="nav-link">Как работаем</a>
-    <a href="#catalog" class="nav-link">Продукция</a>
-    <a href="projects.html" class="nav-link">Для бизнеса</a>
+    <a href="index.html" class="nav-link">Покупателям</a>
+    <a href="projects.html" class="nav-link">Бизнесу и дизайнерам</a>
+    <a href="b2b.html" class="nav-link" style="opacity:1;">Закупкам</a>
     <a href="#form" class="nav-cta">Оставить заявку</a>
   </div>
   <div class="nav-burger" id="burger" onclick="toggleNav()">
@@ -307,10 +318,10 @@ input, select { font-family: inherit; outline: none; }
     <div class="hero-text">
       <div class="hero-label font-mono animate-slide-up">B2B партнёрство</div>
       <h1 class="hero-title font-display animate-slide-up-d1">
-        <em>Прибыльный</em> товар для вашей полки
+        <em>Прибыльный</em> товар для ваших магазинов
       </h1>
       <p class="hero-subtitle animate-slide-up-d2">
-        Поставляем интерьерную плёнку ОБНОВИ в розничные сети, строительные магазины и шоурумы. Гибкие условия, маркетинговая поддержка, быстрая отгрузка.
+        Поставляем интерьерную плёнку ОБНОВИ в розничные сети, строительные магазины и шоурумы. Гибкие условия, быстрая отгрузка со склада в Подмосковье.
       </p>
       <div class="hero-actions animate-slide-up-d3">
         <a href="#form" class="btn-primary">Оставить заявку</a>
@@ -327,12 +338,12 @@ input, select { font-family: inherit; outline: none; }
         <div class="hero-stat-label">текстур в каталоге</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-num font-display">4.8★</div>
+        <div class="hero-stat-num font-display">4,9★</div>
         <div class="hero-stat-label">рейтинг на МП</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-num font-display">5 лет</div>
-        <div class="hero-stat-label">гарантия</div>
+        <div class="hero-stat-num font-display">4 года</div>
+        <div class="hero-stat-label">в продаже на рынке РФ</div>
       </div>
     </div>
   </div>
@@ -362,7 +373,7 @@ input, select { font-family: inherit; outline: none; }
   <div class="section-inner">
     <div class="section-label section-label--dark font-mono reveal">Продукция</div>
     <h2 class="heading font-display reveal" style="margin-bottom:16px;">Ассортимент</h2>
-    <p class="products-desc reveal">50+ текстур в 4 категориях: дерево, камень, однотонные и узоры. Каждая плёнка доступна в рулонах разной ширины.</p>
+    <p class="products-desc reveal">50+ текстур различной ширины и намотки в рулоне. Категории: дерево, камень, витраж, текстуры.</p>
     <div class="product-grid" id="productGrid"></div>
   </div>
 </section>
@@ -420,26 +431,28 @@ const BENEFITS = [
   { icon:"📦", style:"dark", title:"Бесплатные образцы", desc:"Отправляем полный комплект образцов и POS-материалы для выкладки в вашем магазине." },
   { icon:"👤", style:"wood", title:"Персональный менеджер", desc:"Выделенный менеджер на связи — поможет с заказом, логистикой и маркетингом." },
   { icon:"💳", style:"dark", title:"Отсрочка платежа", desc:"Для объёмов от 500 рулонов — гибкие условия оплаты и отсрочка до 30 дней." },
-  { icon:"🚚", style:"wood", title:"Быстрая логистика", desc:"Отгрузка со склада в Москве за 1–3 рабочих дня. Доставка по всей России." },
-  { icon:"📊", style:"dark", title:"Маркетинговая поддержка", desc:"Контент для соцсетей, фото продукции, баннеры — помогаем продвигать товар." },
+  { icon:"🚚", style:"wood", title:"Быстрая логистика", desc:"Отгрузка со склада в Подмосковье за 1–3 рабочих дня. Доставка по всей России." },
 ];
 
 const PROCESS = [
   { num:"01", title:"Заявка", desc:"Заполните форму на сайте или свяжитесь с нами по телефону — обсудим объёмы и условия" },
   { num:"02", title:"КП и образцы", desc:"Подготовим персональное коммерческое предложение и отправим бесплатные образцы текстур" },
   { num:"03", title:"Договор", desc:"Согласуем условия, подпишем договор — работаем официально с полным пакетом документов" },
-  { num:"04", title:"Отгрузка", desc:"Формируем и отправляем заказ за 1–3 дня со склада в Москве" },
+  { num:"04", title:"Отгрузка", desc:"Формируем и отправляем заказ за 1–3 дня со склада в Подмосковье" },
 ];
 
 const TEXTURES = [
-  { name:"Дуб натуральный", cat:"Дерево", color:"#8B6F47", accent:"#D4A574" },
-  { name:"Орех тёмный", cat:"Дерево", color:"#5C4033", accent:"#8B6F47" },
-  { name:"Каррарский мрамор", cat:"Камень", color:"#E8E4E0", accent:"#B8B0A8" },
-  { name:"Серый бетон", cat:"Камень", color:"#9E9E9E", accent:"#757575" },
-  { name:"Матовый чёрный", cat:"Однотонные", color:"#2A2A2A", accent:"#444" },
-  { name:"Пыльная роза", cat:"Однотонные", color:"#C9A5A0", accent:"#A07A74" },
-  { name:"Терраццо", cat:"Узоры", color:"#E5DDD3", accent:"#C4A882" },
-  { name:"Ясень скандинавский", cat:"Дерево", color:"#C8B99A", accent:"#A89878" },
+  { name:"Дуб натуральный светлый", cat:"Дерево", img:"img/Natural Light Oak.png" },
+  { name:"Дуб песочный",            cat:"Дерево", img:"img/Sand Oa.png" },
+  { name:"Дуб скандинавский",       cat:"Дерево", img:"img/Nordic Oak.png" },
+  { name:"Дуб серый",               cat:"Дерево", img:"img/Grey Oak.png" },
+  { name:"Орех тёмный",             cat:"Дерево", img:"img/Dark Walnut.png" },
+  { name:"Дуб чёрный",              cat:"Дерево", img:"img/Black Oak.png" },
+  { name:"Дуб белёный",             cat:"Дерево", img:"img/Whitewashed Oak.png" },
+  { name:"Белое дерево",            cat:"Дерево", img:"img/White Wood.png" },
+  { name:"Дуб песочный светлый",    cat:"Дерево", img:"img/Sand Oak.png" },
+  { name:"Мрамор серый",            cat:"Камень", img:"img/marble.png" },
+  { name:"Шагрень серая",           cat:"Текстуры", img:"img/Grey Shagreen.png" },
 ];
 
 // ── NAV ──
@@ -482,7 +495,7 @@ function renderProcess() {
 function renderProducts() {
   document.getElementById('productGrid').innerHTML = TEXTURES.map((t, i) => `
     <div class="product-card reveal ${i > 0 ? 'reveal-d' + Math.min(i, 4) : ''}">
-      <div class="product-thumb" style="background:linear-gradient(135deg, ${t.color} 0%, ${t.accent} 100%);"></div>
+      <div class="product-thumb" style="background:url('${t.img}') center/cover;"></div>
       <div class="product-body">
         <div class="product-name">${t.name}</div>
         <div class="product-cat font-mono">${t.cat}</div>
