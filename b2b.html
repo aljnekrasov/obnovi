@@ -37,6 +37,9 @@ input, select { font-family: inherit; outline: none; }
   --dark: #1A1816;
   --wood: #8B6F47;
   --wood-deep: #5C4033;
+  --color-terracotta: #C77658;
+  --color-deep-blue: #2C6790;
+  --color-mint: #A9CAB5;
   --text-muted: rgba(26,24,22,0.6);
   --text-faint: rgba(26,24,22,0.4);
   --border: rgba(26,24,22,0.06);
@@ -269,15 +272,17 @@ input, select { font-family: inherit; outline: none; }
 .form-success h3 { font-size: 22px; margin-bottom: 8px; }
 .form-success p { font-size: 14px; color: var(--text-muted); }
 
-/* ── CTA BAND ── */
+/* ── CTA BANDS ── */
+.cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 768px) { .cta-grid { grid-template-columns: 1fr; } }
 .cta-band {
   background: linear-gradient(135deg, var(--wood) 0%, var(--wood-deep) 100%);
-  border-radius: var(--radius-2xl); padding: 64px 48px;
-  display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: 32px;
+  border-radius: var(--radius-2xl); padding: 48px 36px;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 24px;
 }
-.cta-band h3 { font-size: 32px; color: var(--warm); margin-bottom: 12px; }
-.cta-band p { font-size: 15px; color: rgba(245,240,235,0.7); max-width: 400px; }
+.cta-band h3 { font-size: 26px; color: var(--warm); margin-bottom: 8px; }
+.cta-band p { font-size: 14px; color: rgba(245,240,235,0.7); line-height: 1.6; }
+.cta-band .btn-primary { align-self: flex-start; }
 
 /* ── FOOTER ── */
 .footer { padding: 48px 24px; border-top: 1px solid var(--border); }
@@ -291,9 +296,31 @@ input, select { font-family: inherit; outline: none; }
 .footer-socials { display: flex; gap: 24px; }
 .footer-socials a { font-size: 13px; color: rgba(26,24,22,0.5); transition: color .2s; }
 .footer-socials a:hover { color: var(--dark); }
+
+/* consent checkbox */
+.consent-label {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 12px; line-height: 1.5; color: var(--text-muted);
+  margin-bottom: 16px; cursor: pointer;
+}
+.consent-label input[type="checkbox"] {
+  flex-shrink: 0; margin-top: 2px; width: 16px; height: 16px;
+  accent-color: var(--wood); cursor: pointer;
+}
+.consent-label a { color: var(--wood); text-decoration: underline; }
+.consent-label a:hover { color: var(--wood-deep); }
+
+.footer-legal {
+  max-width: 1120px; margin: 16px auto 0; padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 12px; line-height: 1.6; color: var(--text-faint);
+}
 </style>
 </head>
 <body>
+
+<!-- hidden iframe for Google Sheets form submit -->
+<iframe name="gsLeadsFrame" id="gsLeadsFrame" style="display:none;position:absolute;width:0;height:0;border:0;"></iframe>
 
 <!-- ════════════ NAV ════════════ -->
 <nav class="nav" id="nav">
@@ -302,7 +329,7 @@ input, select { font-family: inherit; outline: none; }
     <a href="index.html" class="nav-link">Покупателям</a>
     <a href="projects.html" class="nav-link">Бизнесу и дизайнерам</a>
     <a href="b2b.html" class="nav-link" style="opacity:1;">Закупкам</a>
-    <a href="#form" class="nav-cta">Оставить заявку</a>
+    <a href="#form" class="nav-cta">Заказать каталог</a>
   </div>
   <div class="nav-burger" id="burger" onclick="toggleNav()">
     <span></span><span></span><span></span>
@@ -324,7 +351,7 @@ input, select { font-family: inherit; outline: none; }
         Поставляем интерьерную плёнку ОБНОВИ в розничные сети, строительные магазины и шоурумы. Гибкие условия, быстрая отгрузка со склада в Подмосковье.
       </p>
       <div class="hero-actions animate-slide-up-d3">
-        <a href="#form" class="btn-primary">Оставить заявку</a>
+        <a href="#form" class="btn-primary">Заказать каталог</a>
         <a href="index.html" class="btn-outline">На главную →</a>
       </div>
     </div>
@@ -398,15 +425,24 @@ input, select { font-family: inherit; outline: none; }
   </div>
 </section>
 
-<!-- ════════════ CTA BAND ════════════ -->
+<!-- ════════════ CTA BANDS ════════════ -->
 <section class="section">
   <div class="section-inner">
-    <div class="cta-band reveal">
-      <div>
-        <h3 class="font-display">Посмотрите продукт глазами покупателя</h3>
-        <p>Загляните на розничный сайт ОБНОВИ — увидите, как мы работаем с конечным потребителем</p>
+    <div class="cta-grid">
+      <div class="cta-band reveal">
+        <div>
+          <h3 class="font-display">Покупателям</h3>
+          <p>Посмотрите продукт глазами конечного клиента — каталог текстур, инструкции, отзывы и ссылки на маркетплейсы.</p>
+        </div>
+        <a href="index.html" class="btn-primary" style="background:var(--warm); color:var(--dark);">На главную →</a>
       </div>
-      <a href="index.html" class="btn-primary" style="background:var(--warm); color:var(--dark);">Перейти на сайт →</a>
+      <div class="cta-band reveal reveal-d1">
+        <div>
+          <h3 class="font-display">Бизнесу и дизайнерам</h3>
+          <p>Обновление интерьеров отелей, ресторанов, офисов и клиник — без ремонта. Закажите веер образцов.</p>
+        </div>
+        <a href="projects.html" class="btn-primary" style="background:var(--warm); color:var(--dark);">Заказать веер образцов →</a>
+      </div>
     </div>
   </div>
 </section>
@@ -421,6 +457,10 @@ input, select { font-family: inherit; outline: none; }
       <a href="#">WhatsApp</a>
       <a href="#">Instagram</a>
     </div>
+  </div>
+  <div class="footer-legal">
+    ИП Ширяев Я.С. &nbsp;·&nbsp; ИНН: 540400654127 &nbsp;·&nbsp; ОГРНИП: 318547600126959<br>
+    Курганская область, Варгашинский район, с. Лихачи, ул. Мира, д. 7, кв. 1
   </div>
 </footer>
 
@@ -453,6 +493,11 @@ const TEXTURES = [
   { name:"Дуб песочный светлый",    cat:"Дерево", img:"img/Sand Oak.png" },
   { name:"Мрамор серый",            cat:"Камень", img:"img/marble.png" },
   { name:"Шагрень серая",           cat:"Текстуры", img:"img/Grey Shagreen.png" },
+  { name:"Бетон",                   cat:"Камень", img:"img/beton.png" },
+  { name:"Золотой металлик",        cat:"Текстуры", img:"img/gold.png" },
+  { name:"Терракот",                cat:"Плашечные цвета", color:"#C77658" },
+  { name:"Глубокий синий",          cat:"Плашечные цвета", color:"#2C6790" },
+  { name:"Мята",                    cat:"Плашечные цвета", color:"#A9CAB5" },
 ];
 
 // ── NAV ──
@@ -493,15 +538,18 @@ function renderProcess() {
 
 // ── PRODUCT CATALOG ──
 function renderProducts() {
-  document.getElementById('productGrid').innerHTML = TEXTURES.map((t, i) => `
+  document.getElementById('productGrid').innerHTML = TEXTURES.map((t, i) => {
+    const thumbStyle = t.color ? `background:${t.color}` : `background:url('${t.img}') center/cover`;
+    return `
     <div class="product-card reveal ${i > 0 ? 'reveal-d' + Math.min(i, 4) : ''}">
-      <div class="product-thumb" style="background:url('${t.img}') center/cover;"></div>
+      <div class="product-thumb" style="${thumbStyle}"></div>
       <div class="product-body">
         <div class="product-name">${t.name}</div>
         <div class="product-cat font-mono">${t.cat}</div>
       </div>
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 // ── PARTNER FORM ──
@@ -532,13 +580,42 @@ function renderPartnerForm() {
         <option value="100-500">100–500 рулонов</option>
         <option value="500+">500+ рулонов</option>
       </select>
-      <button class="pf-submit" onclick="submitPartner()">Отправить заявку</button>
+      <label class="consent-label">
+        <input type="checkbox" id="pfConsent">
+        Нажимая кнопку, я даю согласие на обработку персональных данных в соответствии с Политикой конфиденциальности и ФЗ №152 «О персональных данных»
+      </label>
+      <button class="pf-submit" onclick="submitPartner()">Заказать каталог</button>
     </div>`;
+}
+
+const GS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwb9G7kwoZKfLRqt6juX5JBHS8EvCe361_PI54xTikzYGuBAhF7xObTdRFZuUoJmE727Q/exec';
+
+function sendToGoogleSheets(data, onSuccess) {
+  if (!GS_WEBAPP_URL || GS_WEBAPP_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
+    console.log('Lead (Google Sheets не настроен):', data);
+    if (onSuccess) onSuccess();
+    return;
+  }
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = GS_WEBAPP_URL;
+  form.target = 'gsLeadsFrame';
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'payload';
+  input.value = JSON.stringify(data);
+  form.appendChild(input);
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
+  if (onSuccess) onSuccess();
 }
 
 function submitPartner() {
   const name = document.getElementById('pfName').value;
   const phone = document.getElementById('pfPhone').value;
+  const consent = document.getElementById('pfConsent') && document.getElementById('pfConsent').checked;
+  if (!consent) { alert('Пожалуйста, дайте согласие на обработку персональных данных'); return; }
   if (name && phone) {
     const data = {
       name,
@@ -550,9 +627,7 @@ function submitPartner() {
       source: 'partner_form',
       timestamp: new Date().toISOString()
     };
-    console.log('Partner lead:', data);
-    partnerSent = true;
-    renderPartnerForm();
+    sendToGoogleSheets(data, () => { partnerSent = true; renderPartnerForm(); });
   }
 }
 

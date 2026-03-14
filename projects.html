@@ -36,6 +36,9 @@ input, select, textarea { font-family: inherit; outline: none; }
   --dark: #1A1816;
   --wood: #8B6F47;
   --wood-deep: #5C4033;
+  --color-terracotta: #C77658;
+  --color-deep-blue: #2C6790;
+  --color-mint: #A9CAB5;
   --text-muted: rgba(26,24,22,0.6);
   --text-faint: rgba(26,24,22,0.4);
   --border: rgba(26,24,22,0.06);
@@ -248,15 +251,17 @@ input, select, textarea { font-family: inherit; outline: none; }
 .form-success h3 { font-size: 22px; margin-bottom: 8px; }
 .form-success p { font-size: 14px; color: var(--text-muted); }
 
-/* ── CTA BAND ── */
+/* ── CTA BANDS ── */
+.cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 768px) { .cta-grid { grid-template-columns: 1fr; } }
 .cta-band {
   background: linear-gradient(135deg, var(--wood) 0%, var(--wood-deep) 100%);
-  border-radius: var(--radius-2xl); padding: 64px 48px;
-  display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: 32px;
+  border-radius: var(--radius-2xl); padding: 48px 36px;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 24px;
 }
-.cta-band h3 { font-size: 32px; color: var(--warm); margin-bottom: 12px; }
-.cta-band p { font-size: 15px; color: rgba(245,240,235,0.7); max-width: 400px; }
+.cta-band h3 { font-size: 26px; color: var(--warm); margin-bottom: 8px; }
+.cta-band p { font-size: 14px; color: rgba(245,240,235,0.7); line-height: 1.6; }
+.cta-band .btn-primary { align-self: flex-start; }
 
 /* ── FOOTER ── */
 .footer { padding: 48px 24px; border-top: 1px solid var(--border); }
@@ -270,9 +275,31 @@ input, select, textarea { font-family: inherit; outline: none; }
 .footer-socials { display: flex; gap: 24px; }
 .footer-socials a { font-size: 13px; color: rgba(26,24,22,0.5); transition: color .2s; }
 .footer-socials a:hover { color: var(--dark); }
+
+/* consent checkbox */
+.consent-label {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 12px; line-height: 1.5; color: var(--text-muted);
+  margin-bottom: 16px; cursor: pointer;
+}
+.consent-label input[type="checkbox"] {
+  flex-shrink: 0; margin-top: 2px; width: 16px; height: 16px;
+  accent-color: var(--wood); cursor: pointer;
+}
+.consent-label a { color: var(--wood); text-decoration: underline; }
+.consent-label a:hover { color: var(--wood-deep); }
+
+.footer-legal {
+  max-width: 1120px; margin: 16px auto 0; padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 12px; line-height: 1.6; color: var(--text-faint);
+}
 </style>
 </head>
 <body>
+
+<!-- hidden iframe for Google Sheets form submit -->
+<iframe name="gsLeadsFrame" id="gsLeadsFrame" style="display:none;position:absolute;width:0;height:0;border:0;"></iframe>
 
 <!-- ════════════ NAV ════════════ -->
 <nav class="nav" id="nav">
@@ -281,7 +308,7 @@ input, select, textarea { font-family: inherit; outline: none; }
     <a href="index.html" class="nav-link">Покупателям</a>
     <a href="projects.html" class="nav-link" style="opacity:1;">Бизнесу и дизайнерам</a>
     <a href="b2b.html" class="nav-link">Закупкам</a>
-    <a href="#form" class="nav-cta">Обсудить проект</a>
+    <a href="#form" class="nav-cta">Заказать веер образцов</a>
   </div>
   <div class="nav-burger" id="burger" onclick="toggleNav()">
     <span></span><span></span><span></span>
@@ -299,10 +326,10 @@ input, select, textarea { font-family: inherit; outline: none; }
       Новый интерьер для вашего бизнеса — <em>без ремонта</em>
     </h1>
     <p class="hero-subtitle animate-slide-up-d2">
-      Обновите кафе, ресторан, кальянную, клуб или спортзал за 1–3 дня. Декоративная плёнка ОБНОВИ — дешевле ремонта в 5–10 раз, без остановки работы заведения.
+      Обновите отель, ресторан, магазин, офис или клинику за 1–3 дня. Декоративная плёнка ОБНОВИ — дешевле ремонта в 5–10 раз, без остановки работы.
     </p>
     <div class="hero-actions animate-slide-up-d3">
-      <a href="#form" class="btn-primary">Обсудить проект</a>
+      <a href="#form" class="btn-primary">Заказать веер образцов</a>
       <a href="index.html" class="btn-outline">На главную →</a>
     </div>
   </div>
@@ -313,7 +340,7 @@ input, select, textarea { font-family: inherit; outline: none; }
   <div class="section-inner">
     <div class="section-label section-label--dark font-mono reveal">Кому подходит</div>
     <h2 class="heading font-display reveal" style="margin-bottom:16px;">Пространства, которые мы обновляем</h2>
-    <p class="cases-intro reveal">Плёнка ОБНОВИ подходит для любых коммерческих интерьеров — от барной стойки до стен спортзала.</p>
+    <p class="cases-intro reveal">Плёнка ОБНОВИ подходит для любых коммерческих интерьеров — от номеров отеля до торговых залов.</p>
     <div class="cases-grid" id="casesGrid"></div>
   </div>
 </section>
@@ -356,15 +383,24 @@ input, select, textarea { font-family: inherit; outline: none; }
   </div>
 </section>
 
-<!-- ════════════ CTA BAND ════════════ -->
+<!-- ════════════ CTA BANDS ════════════ -->
 <section class="section">
   <div class="section-inner">
-    <div class="cta-band reveal">
-      <div>
-        <h3 class="font-display">Оптовые поставки для сетей</h3>
-        <p>Управляете сетью заведений? Посмотрите условия для партнёров — отгрузка от 50 рулонов, отсрочка, персональный менеджер</p>
+    <div class="cta-grid">
+      <div class="cta-band reveal">
+        <div>
+          <h3 class="font-display">Покупателям</h3>
+          <p>Каталог текстур, инструкция по наклейке, промокоды и ссылки на маркетплейсы — всё для самостоятельного обновления интерьера.</p>
+        </div>
+        <a href="index.html" class="btn-primary" style="background:var(--warm); color:var(--dark);">На главную →</a>
       </div>
-      <a href="b2b.html" class="btn-primary" style="background:var(--warm); color:var(--dark);">Партнёрам →</a>
+      <div class="cta-band reveal reveal-d1">
+        <div>
+          <h3 class="font-display">Для закупщиков</h3>
+          <p>Оптовые поставки плёнки ОБНОВИ в розничные сети и магазины. Маржинальность от 40%, быстрая отгрузка.</p>
+        </div>
+        <a href="b2b.html" class="btn-primary" style="background:var(--warm); color:var(--dark);">Заказать каталог →</a>
+      </div>
     </div>
   </div>
 </section>
@@ -380,64 +416,50 @@ input, select, textarea { font-family: inherit; outline: none; }
       <a href="#">Instagram</a>
     </div>
   </div>
+  <div class="footer-legal">
+    ИП Ширяев Я.С. &nbsp;·&nbsp; ИНН: 540400654127 &nbsp;·&nbsp; ОГРНИП: 318547600126959<br>
+    Курганская область, Варгашинский район, с. Лихачи, ул. Мира, д. 7, кв. 1
+  </div>
 </footer>
 
 <!-- ════════════ JAVASCRIPT ════════════ -->
 <script>
 const CASES = [
   {
-    icon: "☕", title: "Кафе и рестораны",
+    icon: "🏨", title: "Отели",
+    color: "#5C4033", accent: "#8B6F47",
+    desc: "Обновите номерной фонд без капитального ремонта: двери, шкафы, столы, подоконники. Один номер — за 2–3 часа, без выселения гостей.",
+    surfaces: ["Двери", "Шкафы", "Тумбы", "Подоконники"]
+  },
+  {
+    icon: "🍽️", title: "Рестораны и кафе",
     color: "#8B6F47", accent: "#D4A574",
     desc: "Барные стойки, столешницы, стены, фасады кухонной мебели. Обновите зал или летнюю веранду между сезонами — без закрытия заведения.",
     surfaces: ["Барная стойка", "Столешницы", "Стены", "Фасады"]
   },
   {
-    icon: "💨", title: "Кальянные и лаунж-бары",
-    color: "#5C4033", accent: "#8B6F47",
-    desc: "Создайте атмосферу с текстурами тёмного дерева, камня или бетона. Плёнка устойчива к влаге и легко моется — идеально для зон с дымом.",
-    surfaces: ["Стены", "Стойки", "Столы", "Перегородки"]
-  },
-  {
-    icon: "🎵", title: "Клубы и бары",
-    color: "#2A2A2A", accent: "#444",
-    desc: "Матовый чёрный, тёмные текстуры камня, контрастные акценты. Быстрая смена оформления под тематические вечеринки или ребрендинг.",
-    surfaces: ["DJ-зона", "Бар", "Стены", "Мебель"]
-  },
-  {
-    icon: "🏋️", title: "Спортклубы и студии",
+    icon: "🛍️", title: "Ритейл-магазины",
     color: "#9E9E9E", accent: "#757575",
-    desc: "Ресепшн, раздевалки, зоны отдыха. Плёнка выдерживает активную эксплуатацию, легко обновляется при износе отдельных участков.",
-    surfaces: ["Ресепшн", "Раздевалки", "Шкафчики", "Стены"]
+    desc: "Торговое оборудование, примерочные, стены, витрины. Быстрое обновление точки к новому сезону или ребрендингу — за 1–2 дня.",
+    surfaces: ["Витрины", "Стеллажи", "Примерочные", "Стены"]
   },
   {
-    icon: "💇", title: "Салоны красоты и массаж",
-    color: "#C9A5A0", accent: "#A07A74",
-    desc: "Стойка ресепшн, стены кабинетов, зона ожидания. Создайте атмосферу уюта и чистоты текстурами светлого дерева или мрамора — клиенты оценят.",
-    surfaces: ["Ресепшн", "Стены", "Шкафы", "Кабинеты"]
-  },
-  {
-    icon: "📷", title: "Фотостудии",
-    color: "#C8B99A", accent: "#A89878",
-    desc: "Фоны, стены циклорам, декоративные панели. Меняйте текстуры под разные съёмки — плёнка наклеивается и снимается без следов.",
-    surfaces: ["Фоны", "Стены", "Панели", "Мебель"]
-  },
-  {
-    icon: "🎨", title: "Декораторы и оформители",
-    color: "#E5DDD3", accent: "#C4A882",
-    desc: "Оформление мероприятий, выставок, шоурумов и витрин. Плёнка — быстрый способ преобразить пространство для фотозон, стендов и инсталляций.",
-    surfaces: ["Фотозоны", "Стенды", "Витрины", "Декор"]
-  },
-  {
-    icon: "🏨", title: "Отели и хостелы",
-    color: "#5C4033", accent: "#8B6F47",
-    desc: "Обновите номерной фонд без капитального ремонта: двери, шкафы, столы, подоконники. Один номер — за 2–3 часа.",
-    surfaces: ["Двери", "Шкафы", "Тумбы", "Подоконники"]
-  },
-  {
-    icon: "✏️", title: "Коворкинги и офисы",
+    icon: "🏢", title: "Офисы",
     color: "#2A2A2A", accent: "#444",
-    desc: "Переговорные, ресепшн, кухня. Текстуры дерева и камня создают премиальную атмосферу при минимальных затратах.",
+    desc: "Переговорные, ресепшн, кухня, рабочие зоны. Текстуры дерева и камня создают премиальную атмосферу при минимальных затратах.",
     surfaces: ["Ресепшн", "Переговорные", "Кухня", "Стены"]
+  },
+  {
+    icon: "🏥", title: "Клиники",
+    color: "#C9A5A0", accent: "#A07A74",
+    desc: "Стойка регистратуры, кабинеты, зоны ожидания. Плёнка легко моется и дезинфицируется — подходит для медицинских учреждений.",
+    surfaces: ["Регистратура", "Кабинеты", "Ожидание", "Стены"]
+  },
+  {
+    icon: "🔧", title: "Реноваторы интерьера",
+    color: "#C8B99A", accent: "#A89878",
+    desc: "Профессиональное обновление интерьеров для клиентов: квартиры, дома, коммерческие пространства. Плёнка — быстрый и маржинальный инструмент в арсенале мастера.",
+    surfaces: ["Мебель", "Двери", "Кухни", "Стены"]
   },
 ];
 
@@ -530,16 +552,13 @@ function renderForm() {
       </div>
       <input class="pf-input" type="text" placeholder="Город" id="pfCity" style="margin-bottom:14px;">
       <select class="pf-input pf-select" id="pfType">
-        <option value="" disabled selected>Тип заведения</option>
-        <option value="cafe">Кафе / Ресторан</option>
-        <option value="hookah">Кальянная / Лаунж</option>
-        <option value="club">Клуб / Бар</option>
-        <option value="gym">Спортклуб / Студия</option>
-        <option value="beauty">Салон красоты / Массаж</option>
-        <option value="photo">Фотостудия</option>
-        <option value="decor">Декоратор / Оформитель</option>
-        <option value="hotel">Отель / Хостел</option>
-        <option value="office">Коворкинг / Офис</option>
+        <option value="" disabled selected>Тип бизнеса</option>
+        <option value="hotel">Отель</option>
+        <option value="cafe">Ресторан / Кафе</option>
+        <option value="retail">Ритейл-магазин</option>
+        <option value="office">Офис</option>
+        <option value="clinic">Клиника</option>
+        <option value="renovator">Реноватор интерьера</option>
         <option value="other">Другое</option>
       </select>
       <select class="pf-input pf-select" id="pfArea">
@@ -550,13 +569,42 @@ function renderForm() {
         <option value="100+">Больше 100 м²</option>
       </select>
       <textarea class="pf-textarea" placeholder="Что хотите обновить? (барная стойка, стены, мебель...)" id="pfComment"></textarea>
-      <button class="pf-submit" onclick="submitForm()">Получить расчёт</button>
+      <label class="consent-label">
+        <input type="checkbox" id="pfConsent">
+        Нажимая кнопку, я даю согласие на обработку персональных данных в соответствии с Политикой конфиденциальности и ФЗ №152 «О персональных данных»
+      </label>
+      <button class="pf-submit" onclick="submitForm()">Заказать веер образцов</button>
     </div>`;
+}
+
+const GS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwb9G7kwoZKfLRqt6juX5JBHS8EvCe361_PI54xTikzYGuBAhF7xObTdRFZuUoJmE727Q/exec';
+
+function sendToGoogleSheets(data, onSuccess) {
+  if (!GS_WEBAPP_URL || GS_WEBAPP_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
+    console.log('Lead (Google Sheets не настроен):', data);
+    if (onSuccess) onSuccess();
+    return;
+  }
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = GS_WEBAPP_URL;
+  form.target = 'gsLeadsFrame';
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'payload';
+  input.value = JSON.stringify(data);
+  form.appendChild(input);
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
+  if (onSuccess) onSuccess();
 }
 
 function submitForm() {
   const name = document.getElementById('pfName').value;
   const phone = document.getElementById('pfPhone').value;
+  const consent = document.getElementById('pfConsent') && document.getElementById('pfConsent').checked;
+  if (!consent) { alert('Пожалуйста, дайте согласие на обработку персональных данных'); return; }
   if (name && phone) {
     const data = {
       name,
@@ -568,9 +616,7 @@ function submitForm() {
       source: 'project_form',
       timestamp: new Date().toISOString()
     };
-    console.log('Project lead:', data);
-    formSent = true;
-    renderForm();
+    sendToGoogleSheets(data, () => { formSent = true; renderForm(); });
   }
 }
 

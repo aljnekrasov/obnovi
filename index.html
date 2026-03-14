@@ -37,6 +37,9 @@ input, select { font-family: inherit; outline: none; }
   --dark: #1A1816;
   --wood: #8B6F47;
   --wood-deep: #5C4033;
+  --color-terracotta: #C77658;
+  --color-deep-blue: #2C6790;
+  --color-mint: #A9CAB5;
   --text-muted: rgba(26,24,22,0.6);
   --text-faint: rgba(26,24,22,0.4);
   --border: rgba(26,24,22,0.06);
@@ -83,31 +86,68 @@ input, select { font-family: inherit; outline: none; }
   position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
   padding: 0 24px; height: 64px;
   display: flex; align-items: center; justify-content: space-between;
-  transition: background .35s, border-color .35s, backdrop-filter .35s;
+  transition: color .35s;
+  background: transparent;
 }
-.nav.scrolled {
-  background: rgba(255,252,248,0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--border);
+.nav > * { position: relative; z-index: 1; }
+.nav.scrolled::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 0;
+  background: linear-gradient(to bottom,
+    rgba(255,252,248,0.9) 0%,
+    rgba(255,252,248,0.6) 40%,
+    rgba(255,252,248,0.3) 70%,
+    transparent 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  -webkit-mask-image: linear-gradient(to bottom,
+    black 0%,
+    black 15%,
+    rgba(0,0,0,0.85) 35%,
+    rgba(0,0,0,0.55) 55%,
+    rgba(0,0,0,0.25) 80%,
+    transparent 100%);
+  mask-image: linear-gradient(to bottom,
+    black 0%,
+    black 15%,
+    rgba(0,0,0,0.85) 35%,
+    rgba(0,0,0,0.55) 55%,
+    rgba(0,0,0,0.25) 80%,
+    transparent 100%);
+  transition: background .4s;
 }
-.nav-logo { font-weight: 700; font-size: 18px; letter-spacing: 0.08em; }
+.nav-over-dark.scrolled::before {
+  background: linear-gradient(to bottom,
+    rgba(26,24,22,0.85) 0%,
+    rgba(26,24,22,0.55) 40%,
+    rgba(26,24,22,0.25) 70%,
+    transparent 100%);
+}
+.nav-logo { font-weight: 700; font-size: 18px; letter-spacing: 0.08em; color: var(--dark); transition: color .35s; }
 .nav-links { display: flex; gap: 32px; align-items: center; }
 .nav-link {
   font-size: 13px; font-weight: 500; letter-spacing: 0.02em;
-  opacity: 0.6; transition: opacity .2s;
+  color: var(--dark); opacity: 0.6;
+  transition: opacity .2s, color .35s;
 }
 .nav-link:hover { opacity: 1; }
 .nav-cta {
   padding: 10px 20px; background: var(--dark); color: var(--warm);
   border-radius: 8px; font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
-  transition: transform .2s, box-shadow .2s;
+  transition: transform .2s, box-shadow .2s, background .35s, color .35s;
 }
 .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,.1); }
 
+/* nav over dark section */
+.nav-over-dark .nav-logo,
+.nav-over-dark .nav-link { color: var(--warm); }
+.nav-over-dark .nav-link:hover { opacity: 1; color: var(--warm); }
+.nav-over-dark .nav-cta { background: var(--warm); color: var(--dark); }
+.nav-over-dark .nav-burger span { background: var(--warm); }
+
 /* mobile nav */
 .nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
-.nav-burger span { display: block; width: 22px; height: 2px; background: var(--dark); border-radius: 2px; transition: all .3s; }
+.nav-burger span { display: block; width: 22px; height: 2px; background: var(--dark); border-radius: 2px; transition: background .35s; }
 
 @media (max-width: 768px) {
   .nav-links { display: none; }
@@ -162,107 +202,23 @@ input, select { font-family: inherit; outline: none; }
 }
 .btn-outline:hover { border-color: rgba(26,24,22,0.4); }
 
-/* hero rolls */
-.hero-rolls {
-  flex-shrink: 0; width: 420px; height: 480px; max-width: 100%;
-  position: relative;
+/* hero image */
+.hero-img {
+  flex-shrink: 0; width: 520px; max-width: 100%;
+  border-radius: var(--radius-xl); overflow: hidden;
+  box-shadow: 0 16px 60px rgba(0,0,0,.1);
+  animation: slideUp .8s ease-out .3s both;
 }
-.roll {
-  position: absolute; top: 0;
-  width: 76px;
-  animation: unroll 1.8s cubic-bezier(.22,.68,.35,1) both;
-  transform-origin: top center;
-  filter: drop-shadow(3px 6px 12px rgba(0,0,0,.18));
-}
-
-/* roll tube at the top */
-.roll-tube {
-  position: relative; width: 100%; height: 34px; z-index: 3;
-  border-radius: 50%;
-  background: linear-gradient(180deg, rgba(200,190,175,1) 0%, rgba(160,150,135,1) 50%, rgba(130,120,105,1) 100%);
-  box-shadow: 0 4px 10px rgba(0,0,0,.2), inset 0 -2px 4px rgba(255,255,255,.15);
-}
-.roll-tube::after {
-  content: '';
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: 18px; height: 18px; border-radius: 50%;
-  background: radial-gradient(circle at 40% 40%, #e0d9d0 0%, #bab2a5 40%, #8a8070 100%);
-  box-shadow: inset 0 1px 3px rgba(0,0,0,.3), 0 0 0 2px rgba(0,0,0,.08);
-}
-
-/* the strip of texture unrolling */
-.roll-strip {
-  position: relative; width: 100%; height: calc(100% - 20px);
-  margin-top: -14px;
-  background-size: 100% auto; background-position: top center; background-repeat: repeat-y;
-  border-radius: 0 0 4px 4px;
-  overflow: hidden;
-}
-
-/* 3D cylindrical highlight — left edge light */
-.roll-strip::before {
-  content: '';
-  position: absolute; inset: 0; z-index: 2; pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    rgba(255,255,255,.22) 0%,
-    rgba(255,255,255,.06) 12%,
-    transparent 28%,
-    transparent 55%,
-    rgba(0,0,0,.04) 75%,
-    rgba(0,0,0,.12) 92%,
-    rgba(0,0,0,.18) 100%
-  );
-}
-/* vertical depth — top shadow + bottom fade */
-.roll-strip::after {
-  content: '';
-  position: absolute; inset: 0; z-index: 3; pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    rgba(0,0,0,.15) 0%,
-    transparent 8%,
-    transparent 88%,
-    rgba(0,0,0,.06) 100%
-  );
-}
-
-/* bottom curl */
-.roll-curl {
-  width: 100%; height: 18px; margin-top: -2px;
-  border-radius: 0 0 50% 50% / 0 0 100% 100%;
-  background: linear-gradient(180deg, rgba(180,170,155,.6) 0%, rgba(140,130,115,.3) 100%);
-  box-shadow: 0 3px 8px rgba(0,0,0,.1);
-  position: relative; z-index: 1;
-}
-
-/* positions & heights */
-.roll:nth-child(1) { left: 0;     --h: 420px; animation-delay: .3s; }
-.roll:nth-child(2) { left: 84px;  --h: 360px; animation-delay: .55s; }
-.roll:nth-child(3) { left: 168px; --h: 480px; animation-delay: .15s; }
-.roll:nth-child(4) { left: 252px; --h: 340px; animation-delay: .65s; }
-.roll:nth-child(5) { left: 336px; --h: 400px; animation-delay: .4s; }
-
-@keyframes unroll {
-  0%   { height: 34px; opacity: 0; }
-  12%  { height: 34px; opacity: 1; }
-  100% { height: var(--h); opacity: 1; }
+.hero-img img {
+  width: 100%; height: auto; display: block;
+  aspect-ratio: 16 / 9; object-fit: cover;
 }
 
 @media (max-width: 900px) {
   .hero-inner { flex-direction: column; text-align: center; }
   .hero-subtitle { margin-left: auto; margin-right: auto; }
   .hero-actions { justify-content: center; }
-  .hero-rolls { order: -1; width: 320px; height: 360px; margin: 0 auto; }
-  .roll { width: 56px; }
-  .roll:nth-child(1) { left: 0; --h: 300px; }
-  .roll:nth-child(2) { left: 64px; --h: 260px; }
-  .roll:nth-child(3) { left: 128px; --h: 340px; }
-  .roll:nth-child(4) { left: 192px; --h: 240px; }
-  .roll:nth-child(5) { left: 256px; --h: 280px; }
-  .roll-tube { height: 26px; }
-  .roll-tube::after { width: 14px; height: 14px; }
-  .roll-curl { height: 14px; }
+  .hero-img { order: -1; width: 100%; max-width: 480px; margin: 0 auto; }
 }
 
 /* ── SOCIAL PROOF ── */
@@ -306,10 +262,23 @@ input, select { font-family: inherit; outline: none; }
   background: rgba(255,255,255,0.9); border-radius: 6px;
   padding: 4px 10px; font-size: 10px; letter-spacing: 0.1em;
 }
-.texture-body { padding: 16px 20px; }
-.texture-name { font-weight: 600; font-size: 15px; margin-bottom: 12px; }
+.texture-body {
+  padding: 16px 20px;
+  display: flex; flex-direction: column; justify-content: space-between; min-height: 88px;
+}
+.texture-name { font-weight: 600; font-size: 15px; }
+.texture-mp-icons {
+  display: flex; gap: 6px; justify-content: flex-end; margin-top: 12px;
+}
+.texture-mp-icons a {
+  display: flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 6px;
+  transition: transform .2s, opacity .2s;
+}
+.texture-mp-icons a:hover { transform: scale(1.1); opacity: 0.9; }
+.texture-mp-icons img { width: 24px; height: 24px; object-fit: contain; }
 
-/* marketplace btns */
+/* marketplace btns (for more-colors, hero CTA) */
 .mp-btns { display: flex; gap: 8px; flex-wrap: wrap; }
 .mp-btn {
   display: inline-flex; align-items: center; justify-content: center;
@@ -323,6 +292,79 @@ input, select { font-family: inherit; outline: none; }
 .mp-wb { background: #A33AB5; }
 .mp-ym { background: #FFCC00; color: var(--dark); }
 
+/* больше цветов card */
+.more-colors-card {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 280px; padding: 24px;
+  background: linear-gradient(135deg, var(--warm) 0%, rgba(245,240,235,0.6) 100%);
+  border: 2px dashed var(--border-input);
+  border-radius: var(--radius-lg);
+  position: relative; overflow: hidden;
+  transition: transform .3s, box-shadow .3s;
+}
+.more-colors-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,.08); }
+.more-colors-card .more-colors-title { font-size: 20px; font-weight: 600; margin: 0; color: var(--dark); }
+.more-colors-card .more-colors-links {
+  margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+}
+.more-colors-card .more-colors-links a {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 24px; font-size: 15px; font-weight: 600;
+  background: var(--dark); color: var(--warm); border-radius: var(--radius);
+  transition: transform .2s, box-shadow .2s;
+}
+.more-colors-card .more-colors-links a:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,.15); }
+.more-colors-card .more-colors-links img { width: 28px; height: 28px; object-fit: contain; }
+
+/* ── ROLLS INFO ── */
+.rolls-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+}
+.roll-card {
+  background: #fff; border-radius: var(--radius-xl); padding: 40px 28px;
+  border: 1px solid var(--border);
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  transition: transform .3s, box-shadow .3s;
+  position: relative; overflow: hidden;
+}
+.roll-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(0,0,0,.08); }
+.roll-card-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; margin-bottom: 24px;
+}
+.roll-card-icon--width { background: rgba(139,111,71,0.1); }
+.roll-card-icon--length { background: rgba(44,103,144,0.1); }
+.roll-card-icon--colors { background: rgba(169,202,181,0.15); }
+.roll-card-title {
+  font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-faint); margin-bottom: 20px;
+}
+.roll-card-values { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 16px; }
+.roll-chip {
+  padding: 12px 22px; border-radius: 12px;
+  font-size: 22px; font-weight: 700; color: var(--dark);
+  background: var(--warm); position: relative;
+  transition: transform .2s;
+}
+.roll-chip:hover { transform: scale(1.05); }
+.roll-chip small { font-size: 14px; font-weight: 500; opacity: 0.6; }
+.roll-card-note {
+  font-size: 13px; line-height: 1.5; color: var(--text-muted); margin-top: auto;
+}
+.roll-card--accent .roll-card-icon {
+  background: linear-gradient(135deg, var(--wood) 0%, var(--wood-deep) 100%);
+}
+.roll-card--accent .roll-card-icon span { filter: grayscale(1) brightness(10); }
+.roll-card--accent .roll-chip {
+  background: linear-gradient(135deg, var(--wood) 0%, var(--wood-deep) 100%);
+  color: var(--warm);
+}
+
+@media (max-width: 768px) {
+  .rolls-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+}
+
 /* ── HOW TO ── */
 .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 24px; }
 .step-card {
@@ -334,15 +376,17 @@ input, select { font-family: inherit; outline: none; }
 .step-title { font-size: 18px; font-weight: 600; margin-bottom: 10px; color: var(--warm); }
 .step-desc { font-size: 14px; line-height: 1.7; color: rgba(245,240,235,0.55); }
 
-/* ── CTA BAND ── */
+/* ── CTA BANDS ── */
+.cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 768px) { .cta-grid { grid-template-columns: 1fr; } }
 .cta-band {
   background: linear-gradient(135deg, var(--wood) 0%, var(--wood-deep) 100%);
-  border-radius: var(--radius-2xl); padding: 64px 48px;
-  display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: 32px;
+  border-radius: var(--radius-2xl); padding: 48px 36px;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 24px;
 }
-.cta-band h3 { font-size: 32px; color: var(--warm); margin-bottom: 12px; }
-.cta-band p { font-size: 15px; color: rgba(245,240,235,0.7); max-width: 400px; }
+.cta-band h3 { font-size: 26px; color: var(--warm); margin-bottom: 8px; }
+.cta-band p { font-size: 14px; color: rgba(245,240,235,0.7); line-height: 1.6; }
+.cta-band .btn-primary { align-self: flex-start; }
 
 /* ── FAQ ── */
 .faq-wrap { max-width: 680px; margin: 0 auto; }
@@ -373,6 +417,11 @@ input, select { font-family: inherit; outline: none; }
 .footer-socials { display: flex; gap: 24px; }
 .footer-socials a { font-size: 13px; color: rgba(26,24,22,0.5); transition: color .2s; }
 .footer-socials a:hover { color: var(--dark); }
+.footer-legal {
+  max-width: 1120px; margin: 16px auto 0; padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 12px; line-height: 1.6; color: var(--text-faint);
+}
 
 /* ── QUIZ MODAL ── */
 .modal-overlay {
@@ -418,6 +467,36 @@ input, select { font-family: inherit; outline: none; }
 .quiz-done-icon { font-size: 48px; margin-bottom: 16px; color: var(--wood); }
 .quiz-done h3 { font-size: 24px; margin-bottom: 12px; }
 .quiz-done p { font-size: 15px; line-height: 1.6; color: #666; }
+
+/* ── CONSENT CHECKBOX ── */
+.consent-label {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 12px; line-height: 1.5; color: var(--text-muted);
+  margin-bottom: 16px; cursor: pointer;
+}
+.consent-label input[type="checkbox"] {
+  flex-shrink: 0; margin-top: 2px; width: 16px; height: 16px;
+  accent-color: var(--wood); cursor: pointer;
+}
+.consent-label a { color: var(--wood); text-decoration: underline; }
+.consent-label a:hover { color: var(--wood-deep); }
+
+/* privacy modal */
+.privacy-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+  display: none; align-items: center; justify-content: center; padding: 20px;
+}
+.privacy-overlay.open { display: flex; animation: fadeIn .3s; }
+.privacy-modal {
+  background: var(--cream); border-radius: var(--radius-xl); max-width: 680px; width: 100%;
+  max-height: 80vh; overflow-y: auto;
+  padding: 48px 40px; position: relative; box-shadow: 0 40px 80px rgba(0,0,0,.25);
+}
+.privacy-modal h2 { font-size: 22px; margin-bottom: 16px; }
+.privacy-modal h3 { font-size: 16px; margin: 20px 0 8px; }
+.privacy-modal p, .privacy-modal li { font-size: 13px; line-height: 1.7; color: var(--text-muted); }
+.privacy-modal ul { padding-left: 20px; margin-bottom: 12px; }
 </style>
 </head>
 <body>
@@ -455,32 +534,8 @@ input, select { font-family: inherit; outline: none; }
         <a href="#textures" class="btn-outline">Смотреть каталог</a>
       </div>
     </div>
-    <div class="hero-rolls">
-      <div class="roll">
-        <div class="roll-tube"></div>
-        <div class="roll-strip" style="background-image:url('img/Natural Light Oak.png')"></div>
-        <div class="roll-curl"></div>
-      </div>
-      <div class="roll">
-        <div class="roll-tube"></div>
-        <div class="roll-strip" style="background-image:url('img/Dark Walnut.png')"></div>
-        <div class="roll-curl"></div>
-      </div>
-      <div class="roll">
-        <div class="roll-tube"></div>
-        <div class="roll-strip" style="background-image:url('img/Sand Oa.png')"></div>
-        <div class="roll-curl"></div>
-      </div>
-      <div class="roll">
-        <div class="roll-tube"></div>
-        <div class="roll-strip" style="background-image:url('img/Grey Oak.png')"></div>
-        <div class="roll-curl"></div>
-      </div>
-      <div class="roll">
-        <div class="roll-tube"></div>
-        <div class="roll-strip" style="background-image:url('img/Nordic Oak.png')"></div>
-        <div class="roll-curl"></div>
-      </div>
+    <div class="hero-img">
+      <img src="video-preview.png" alt="Интерьерная плёнка ОБНОВИ — пример обновления мебели">
     </div>
   </div>
 </section>
@@ -516,32 +571,70 @@ input, select { font-family: inherit; outline: none; }
   </div>
 </section>
 
+<!-- ════════════ ROLLS INFO ════════════ -->
+<section class="section section--warm" id="rolls">
+  <div class="section-inner">
+    <div class="section-label section-label--dark font-mono reveal">Рулоны</div>
+    <h2 class="heading font-display reveal" style="margin-bottom:48px;">Форматы и ассортимент</h2>
+    <div class="rolls-grid">
+      <div class="roll-card reveal">
+        <div class="roll-card-icon roll-card-icon--width"><span>↔</span></div>
+        <div class="roll-card-title font-mono">Ширина</div>
+        <div class="roll-card-values">
+          <span class="roll-chip">45 <small>см</small></span>
+          <span class="roll-chip">60 <small>см</small></span>
+          <span class="roll-chip">90 <small>см</small></span>
+        </div>
+        <p class="roll-card-note">Узкий формат для полок, широкий — для столешниц и дверей</p>
+      </div>
+      <div class="roll-card reveal reveal-d1">
+        <div class="roll-card-icon roll-card-icon--length"><span>↕</span></div>
+        <div class="roll-card-title font-mono">Длина рулона</div>
+        <div class="roll-card-values">
+          <span class="roll-chip">3 <small>м</small></span>
+          <span class="roll-chip">6 <small>м</small></span>
+          <span class="roll-chip">8 <small>м</small></span>
+        </div>
+        <p class="roll-card-note">Выбирайте длину под площадь поверхности без переплат</p>
+      </div>
+      <div class="roll-card roll-card--accent reveal reveal-d2">
+        <div class="roll-card-icon"><span>🎨</span></div>
+        <div class="roll-card-title font-mono">Оттенки</div>
+        <div class="roll-card-values">
+          <span class="roll-chip">70+</span>
+        </div>
+        <p class="roll-card-note">Дерево, камень, бетон, плашечные цвета, металлик и текстуры</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ════════════ HOW TO ════════════ -->
 <section class="section section--dark" id="howto">
   <div class="section-inner">
     <div class="section-label section-label--light font-mono reveal">Инструкция</div>
     <h2 class="heading heading--light font-display reveal" style="margin-bottom:60px;">Как наклеить</h2>
     <div class="steps-grid" id="stepsGrid"></div>
-    <div style="margin-top:48px; text-align:center;" class="reveal">
-      <button class="btn-primary" style="background:var(--warm); color:var(--dark);" onclick="openQuiz()">
-        Пройти квиз и получить промокод −10% на маркетплейсах
-      </button>
-    </div>
   </div>
 </section>
 
-<!-- ════════════ CTA BAND ════════════ -->
+<!-- ════════════ CTA BANDS ════════════ -->
 <section class="section">
   <div class="section-inner">
-    <div class="cta-band reveal">
-      <div>
-        <h3 class="font-display">Купить сейчас</h3>
-        <p>ОБНОВИ на всех крупных маркетплейсах — выберите удобный</p>
+    <div class="cta-grid">
+      <div class="cta-band reveal">
+        <div>
+          <h3 class="font-display">Для бизнеса и дизайнеров</h3>
+          <p>Обновите интерьер отеля, ресторана, офиса или клиники — без ремонта и остановки работы. Закажите веер образцов.</p>
+        </div>
+        <a href="projects.html" class="btn-primary" style="background:var(--warm); color:var(--dark);">Заказать веер образцов →</a>
       </div>
-      <div class="mp-btns">
-        <a href="#" class="mp-btn mp-btn--lg mp-ozon">Ozon →</a>
-        <a href="#" class="mp-btn mp-btn--lg mp-wb">Wildberries →</a>
-        <a href="#" class="mp-btn mp-btn--lg mp-ym">Яндекс Маркет →</a>
+      <div class="cta-band reveal reveal-d1">
+        <div>
+          <h3 class="font-display">Для закупщиков</h3>
+          <p>Оптовые поставки плёнки ОБНОВИ в розничные сети и магазины. Маржинальность от 40%, быстрая отгрузка.</p>
+        </div>
+        <a href="b2b.html" class="btn-primary" style="background:var(--warm); color:var(--dark);">Заказать каталог →</a>
       </div>
     </div>
   </div>
@@ -558,6 +651,124 @@ input, select { font-family: inherit; outline: none; }
   </div>
 </section>
 
+<!-- ════════════ PRIVACY MODAL ════════════ -->
+<div class="privacy-overlay" id="privacyOverlay" onclick="if(event.target===this)closePrivacy()">
+  <div class="privacy-modal">
+    <button class="modal-close" onclick="closePrivacy()">✕</button>
+    <h2 class="font-display">Политика конфиденциальности и обработки персональных данных</h2>
+    <p>сайта comfort-dom.com</p>
+
+    <h3>1. Общие положения</h3>
+    <p>Настоящая Политика конфиденциальности и обработки персональных данных (далее — Политика) определяет порядок обработки и защиты персональных данных пользователей сайта comfort-dom.com.</p>
+    <p>Политика разработана в соответствии с требованиями:</p>
+    <ul>
+      <li>Федерального закона №152-ФЗ «О персональных данных» от 27.07.2006;</li>
+      <li>Федерального закона №149-ФЗ «Об информации, информационных технологиях и о защите информации»;</li>
+      <li>иных нормативных правовых актов Российской Федерации.</li>
+    </ul>
+    <p>Используя сайт comfort-dom.com, пользователь подтверждает согласие с условиями настоящей Политики.</p>
+    <p>Если пользователь не согласен с условиями Политики, он должен прекратить использование сайта.</p>
+
+    <h3>2. Оператор персональных данных</h3>
+    <p>Оператором персональных данных является:</p>
+    <p><strong>Индивидуальный предприниматель Ширяев Ярослав Сергеевич</strong><br>
+    Краткое наименование: ИП Ширяев Я.С.</p>
+    <p>Юридический адрес:<br>
+    Курганская область, Варгашинский район, с. Лихачи, ул. Мира, д. 7, кв. 1<br>
+    ИНН: 540400654127<br>
+    ОГРНИП: 318547600126959</p>
+    <p>Оператор организует и осуществляет обработку персональных данных пользователей сайта.</p>
+
+    <h3>3. Персональные данные, которые обрабатываются</h3>
+    <p>Оператор может обрабатывать следующие персональные данные пользователя:</p>
+    <ul>
+      <li>ФИО;</li>
+      <li>номер телефона;</li>
+      <li>адрес электронной почты;</li>
+      <li>иные данные, которые пользователь добровольно указывает в формах сайта.</li>
+    </ul>
+    <p>Также автоматически могут собираться обезличенные данные:</p>
+    <ul>
+      <li>IP-адрес;</li>
+      <li>cookie-файлы;</li>
+      <li>информация о браузере;</li>
+      <li>данные о времени посещения;</li>
+      <li>технические параметры устройства;</li>
+      <li>статистика посещения страниц сайта.</li>
+    </ul>
+
+    <h3>4. Цели обработки персональных данных</h3>
+    <p>Персональные данные пользователей обрабатываются в следующих целях:</p>
+    <ul>
+      <li>обработка запросов пользователей;</li>
+      <li>обратная связь с пользователями сайта;</li>
+      <li>консультации по товарам и услугам;</li>
+      <li>обработка заявок и заказов;</li>
+      <li>информирование о продуктах и услугах;</li>
+      <li>улучшение работы сайта и пользовательского опыта;</li>
+      <li>проведение статистических и аналитических исследований.</li>
+    </ul>
+
+    <h3>5. Правовые основания обработки персональных данных</h3>
+    <p>Обработка персональных данных осуществляется на основании:</p>
+    <ul>
+      <li>согласия субъекта персональных данных;</li>
+      <li>требований законодательства Российской Федерации;</li>
+      <li>необходимости исполнения договорных обязательств перед пользователем.</li>
+    </ul>
+
+    <h3>6. Порядок обработки и хранения персональных данных</h3>
+    <p>Обработка персональных данных осуществляется с использованием автоматизированных и неавтоматизированных средств.</p>
+    <p>Оператор принимает необходимые организационные и технические меры для защиты персональных данных от:</p>
+    <ul>
+      <li>неправомерного доступа;</li>
+      <li>утраты;</li>
+      <li>изменения;</li>
+      <li>распространения;</li>
+      <li>иных неправомерных действий.</li>
+    </ul>
+    <p>Персональные данные хранятся не дольше, чем это необходимо для целей их обработки.</p>
+
+    <h3>7. Передача персональных данных третьим лицам</h3>
+    <p>Оператор может передавать персональные данные третьим лицам в следующих случаях:</p>
+    <ul>
+      <li>если пользователь дал согласие на такую передачу;</li>
+      <li>если передача необходима для исполнения обязательств перед пользователем;</li>
+      <li>если передача предусмотрена законодательством Российской Федерации.</li>
+    </ul>
+    <p>Оператор не продает и не передает персональные данные пользователей третьим лицам для коммерческого использования без согласия пользователя.</p>
+
+    <h3>8. Использование файлов cookie</h3>
+    <p>Сайт может использовать файлы cookie для:</p>
+    <ul>
+      <li>корректной работы сайта;</li>
+      <li>анализа поведения пользователей;</li>
+      <li>улучшения пользовательского опыта.</li>
+    </ul>
+    <p>Пользователь может отключить использование cookie в настройках своего браузера.</p>
+
+    <h3>9. Права пользователя</h3>
+    <p>Пользователь имеет право:</p>
+    <ul>
+      <li>получать информацию об обработке его персональных данных;</li>
+      <li>требовать уточнения, блокирования или уничтожения своих персональных данных;</li>
+      <li>отозвать согласие на обработку персональных данных;</li>
+      <li>направить запрос оператору относительно обработки его персональных данных.</li>
+    </ul>
+
+    <h3>10. Отзыв согласия на обработку персональных данных</h3>
+    <p>Пользователь может в любой момент отозвать согласие на обработку персональных данных, направив запрос оператору.</p>
+    <p>После получения такого запроса обработка персональных данных пользователя прекращается, за исключением случаев, предусмотренных законодательством РФ.</p>
+
+    <h3>11. Изменение политики конфиденциальности</h3>
+    <p>Оператор имеет право вносить изменения в настоящую Политику.</p>
+    <p>Актуальная версия Политики всегда размещается на сайте comfort-dom.com.</p>
+
+    <h3>12. Контактная информация</h3>
+    <p>По вопросам обработки персональных данных пользователь может обратиться к оператору ИП Ширяев Ярослав Сергеевич по адресу электронной почты <a href="mailto:client.color@yandex.ru">client.color@yandex.ru</a>, тел.: <a href="tel:+79939540178">+7 993 954-01-78</a></p>
+  </div>
+</div>
+
 <!-- ════════════ FOOTER ════════════ -->
 <footer class="footer">
   <div class="footer-inner">
@@ -567,9 +778,17 @@ input, select { font-family: inherit; outline: none; }
       <a href="#">Telegram</a>
       <a href="#">WhatsApp</a>
       <a href="#">Instagram</a>
+      <a href="#" onclick="event.preventDefault();openPrivacy()">Политика конфиденциальности</a>
     </div>
   </div>
+  <div class="footer-legal">
+    ИП Ширяев Я.С. &nbsp;·&nbsp; ИНН: 540400654127 &nbsp;·&nbsp; ОГРНИП: 318547600126959<br>
+    Курганская область, Варгашинский район, с. Лихачи, ул. Мира, д. 7, кв. 1
+  </div>
 </footer>
+
+<!-- hidden iframe for Google Sheets form submit -->
+<iframe name="gsLeadsFrame" id="gsLeadsFrame" style="display:none;position:absolute;width:0;height:0;border:0;"></iframe>
 
 <!-- ════════════ QUIZ MODAL ════════════ -->
 <div class="modal-overlay" id="quizOverlay" onclick="closeQuizOutside(event)">
@@ -580,17 +799,52 @@ input, select { font-family: inherit; outline: none; }
 <script>
 // ── DATA ──
 const TEXTURES = [
-  { id:1,  name:"Дуб натуральный светлый", cat:"Дерево", img:"img/Natural Light Oak.png" },
-  { id:2,  name:"Дуб песочный",            cat:"Дерево", img:"img/Sand Oa.png" },
-  { id:3,  name:"Дуб скандинавский",       cat:"Дерево", img:"img/Nordic Oak.png" },
-  { id:4,  name:"Дуб серый",               cat:"Дерево", img:"img/Grey Oak.png" },
-  { id:5,  name:"Орех тёмный",             cat:"Дерево", img:"img/Dark Walnut.png" },
-  { id:6,  name:"Дуб чёрный",              cat:"Дерево", img:"img/Black Oak.png" },
-  { id:7,  name:"Дуб белёный",             cat:"Дерево", img:"img/Whitewashed Oak.png" },
-  { id:8,  name:"Белое дерево",            cat:"Дерево", img:"img/White Wood.png" },
-  { id:9,  name:"Дуб песочный светлый",    cat:"Дерево", img:"img/Sand Oak.png" },
-  { id:10, name:"Мрамор серый",            cat:"Камень", img:"img/marble.png" },
-  { id:11, name:"Шагрень серая",           cat:"Текстуры", img:"img/Grey Shagreen.png" },
+  { id:1,  name:"Дуб натуральный светлый", cat:"Дерево", img:"img/Natural Light Oak.png", sku:"A-002",
+    ozon:"https://www.ozon.ru/product/samokleyashchayasya-plenka-dlya-mebeli-i-kuhni-matovaya-pvh-1306744496/",
+    wb:"https://www.wildberries.ru/catalog/173837401/detail.aspx",
+    ym:"https://market.yandex.ru/card/samokleyashchayasya-plenka-dlya-mebeli-i-kukhni-matovaya-pvkh/103566026708?businessId=34758721" },
+  { id:2,  name:"Дуб песочный", cat:"Дерево", img:"img/Sand Oa.png", sku:"K-002",
+    ozon:"https://www.ozon.ru/product/samokleyushchayasya-plenka-dlya-mebeli-2960440155/",
+    wb:"https://www.wildberries.ru/catalog/482570626/detail.aspx",
+    ym:"https://market.yandex.ru/card/dekorativnaya-samokleyashchayasya-plenka-dlya-mebeli-obnovi-premium-svetlyy-orekh-120-mkm-45sm-kh-800sm/4759251633?businessId=34758721" },
+  { id:3,  name:"Дуб скандинавский", cat:"Дерево", img:"img/Nordic Oak.png", sku:"K-005",
+    ozon:"https://www.ozon.ru/product/samokleyushchayasya-plenka-dlya-mebeli-2960440031/",
+    wb:"https://www.wildberries.ru/catalog/482571872/detail.aspx",
+    ym:"https://market.yandex.ru/card/slug/4759251949?businessId=34758721" },
+  { id:4,  name:"Дуб серый", cat:"Дерево", img:"img/Grey Oak.png", sku:"L-009",
+    ozon:"https://www.ozon.ru/product/plenka-samokleyushchayasya-dlya-mebeli-2960774165/",
+    wb:"https://www.wildberries.ru/catalog/482576373/detail.aspx",
+    ym:"https://market.yandex.ru/card/plenka-samokleyashchayasya-dlya-mebeli-i-okon-obnovi-premium-sero-bezhevyy-prochnaya-140-mkm-60sm-kh-600sm/4769972764?businessId=34758721" },
+  { id:5,  name:"Орех тёмный", cat:"Дерево", img:"img/Dark Walnut.png", sku:"K-007",
+    ozon:"https://www.ozon.ru/product/samokleyushchayasya-plenka-dlya-mebeli-2960440323/",
+    wb:"https://www.wildberries.ru/catalog/482572134/detail.aspx",
+    ym:"https://market.yandex.ru/card/dekorativnaya-samokleyashchayasya-plenka-dlya-mebeli-obnovi-premium-nasyshchennyy-korichnevyy-120-mkm-45sm-kh-800sm/4759264788?businessId=34758721" },
+  { id:6,  name:"Дуб чёрный", cat:"Дерево", img:"img/Black Oak.png", sku:"K-010",
+    ozon:"https://www.ozon.ru/product/plenka-samokleyushchayasya-dlya-mebeli-chernaya-2960440029/",
+    wb:"https://www.wildberries.ru/catalog/482572992/detail.aspx",
+    ym:"https://market.yandex.ru/card/dekorativnaya-samokleyashchayasya-plenka-dlya-mebeli-obnovi-premium-chernyy-120-mkm-45sm-kh-800sm/4759294542?businessId=34758721" },
+  { id:7,  name:"Дуб белёный", cat:"Дерево", img:"img/Whitewashed Oak.png", sku:"A-001",
+    ozon:"https://www.ozon.ru/product/samokleyashchayasya-plenka-dlya-mebeli-i-kuhni-matovaya-pvh-1306802905/",
+    wb:"https://www.wildberries.ru/catalog/173419930/detail.aspx",
+    ym:"https://market.yandex.ru/card/samokleyashchayasya-plenka-dlya-mebeli-i-kukhni-matovaya-pvkh/103566026707?businessId=34758721" },
+  { id:8,  name:"Белое дерево", cat:"Дерево", img:"img/White Wood.png", sku:"МС-001",
+    ozon:"https://www.ozon.ru/product/samokleyashchayasya-plenka-dlya-mebeli-i-kuhni-matovaya-2964997973/",
+    wb:"https://www.wildberries.ru/catalog/482577433/detail.aspx",
+    ym:"https://market.yandex.ru/card/samokleyashchayasya-plenka-pvkh-premium-matovaya-dlya-mebelikukhnipola/4731373200?businessId=34758721" },
+  { id:9,  name:"Дуб песочный светлый", cat:"Дерево", img:"img/Sand Oak.png" },
+  { id:10, name:"Мрамор серый", cat:"Камень", img:"img/marble.png", sku:"H-003",
+    ozon:"https://www.ozon.ru/product/samokleyashchayasya-plenka-dlya-mebeli-i-kuhni-matovaya-pvh-1306848759/",
+    wb:"https://www.wildberries.ru/catalog/173837416/detail.aspx",
+    ym:"https://market.yandex.ru/card/slug/103829654555?businessId=34758721" },
+  { id:11, name:"Шагрень серая", cat:"Текстуры", img:"img/Grey Shagreen.png", sku:"L-011",
+    ozon:"https://www.ozon.ru/product/plenka-samokleyushchayasya-dlya-mebeli-2960774402/",
+    wb:"https://www.wildberries.ru/catalog/482576691/detail.aspx",
+    ym:"https://market.yandex.ru/card/plenka-samokleyashchayasya-dlya-mebeli-i-okon-obnovi-premium-serobezhevyy-beton-prochnaya-140-mkm-60sm-kh-600sm/4769029043?businessId=34758721" },
+  { id:12, name:"Бетон", cat:"Камень", img:"img/beton.png" },
+  { id:13, name:"Золотой металлик", cat:"Текстуры", img:"img/gold.png" },
+  { id:14, name:"Терракот", cat:"Плашечные цвета", color:"#C77658" },
+  { id:15, name:"Глубокий синий", cat:"Плашечные цвета", color:"#2C6790" },
+  { id:16, name:"Мята", cat:"Плашечные цвета", color:"#A9CAB5" },
 ];
 const STEPS = [
   { num:"01", title:"Измерьте", desc:"Замерьте поверхность и добавьте 5–7 см запаса для сгиба с каждой стороны" },
@@ -614,16 +868,16 @@ const QUIZ_QS = [
   { key:"size", q:"Примерная площадь поверхности?", opts:["До 1 м²","1–3 м²","3–5 м²","Больше 5 м²"] },
   { key:"style", q:"Какой стиль вам ближе?", opts:["Дерево натуральное","Камень / мрамор","Витраж","Текстуры (шагрень и др.)"] },
 ];
-function mpButtons(size) {
-  const lg = size === 'lg';
-  const cls = lg ? 'mp-btn mp-btn--lg' : 'mp-btn';
+function mpIcons(t) {
+  const ozon = (t && t.ozon) || MP_CATALOG.ozon;
+  const wb   = (t && t.wb)   || MP_CATALOG.wb;
+  const ym   = (t && t.ym)   || MP_CATALOG.ym;
   return `
-    <a href="#" class="${cls} mp-ozon">Ozon →</a>
-    <a href="#" class="${cls} mp-wb">Wildberries →</a>
-    <a href="#" class="${cls} mp-ym">Яндекс Маркет →</a>
+    <a href="${ozon}" target="_blank" rel="noopener" title="Ozon"><img src="img/marketplace/ozon.png" alt="Ozon"></a>
+    <a href="${wb}" target="_blank" rel="noopener" title="Wildberries"><img src="img/marketplace/wb.png" alt="Wildberries"></a>
+    <a href="${ym}" target="_blank" rel="noopener" title="Яндекс Маркет"><img src="img/marketplace/market.png" alt="Яндекс Маркет"></a>
   `;
 }
-
 // ── NAV ──
 let menuOpen = false;
 function toggleNav() {
@@ -635,22 +889,53 @@ document.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', 
   document.getElementById('navLinks').classList.remove('open');
 }));
 window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+  const nav = document.getElementById('nav');
+  const navH = 64;
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+  const darkSections = document.querySelectorAll('.section--dark');
+  let overDark = false;
+  darkSections.forEach(el => {
+    const top = el.getBoundingClientRect().top;
+    const bottom = el.getBoundingClientRect().bottom;
+    if (top < navH && bottom > 0) overDark = true;
+  });
+  nav.classList.toggle('nav-over-dark', overDark);
 });
+
+// marketplace catalog URLs (search for full range)
+const MP_CATALOG = {
+  ozon: "https://www.ozon.ru/category/samokleyushchiesya-plenki-dlya-mebeli-32098/obnovi-101293691/",
+  wb: "https://www.wildberries.ru/seller/305316",
+  ym: "https://market.yandex.ru/business--obnovi/34758721"
+};
 
 // ── TEXTURES ──
 function renderTextures() {
-  document.getElementById('texturesGrid').innerHTML = TEXTURES.map(t => `
+  const cards = TEXTURES.map(t => {
+    const thumbStyle = t.color ? `background:${t.color}` : `background:url('${t.img}') center/cover`;
+    return `
     <div class="texture-card reveal">
-      <div class="texture-thumb" style="background:url('${t.img}') center/cover;">
+      <div class="texture-thumb" style="${thumbStyle}">
         <span class="texture-tag font-mono">${t.cat}</span>
       </div>
       <div class="texture-body">
         <div class="texture-name">${t.name}</div>
-        <div class="mp-btns">${mpButtons()}</div>
+        <div class="texture-mp-icons">${mpIcons(t)}</div>
       </div>
     </div>
-  `).join('');
+  `;
+  }).join('');
+  const moreColorsCard = `
+    <div class="more-colors-card reveal">
+      <h3 class="more-colors-title font-display">Больше цветов</h3>
+      <div class="more-colors-links">
+        <a href="${MP_CATALOG.ozon}" target="_blank" rel="noopener" title="Ozon">Купить <img src="img/marketplace/ozon.png" alt="Ozon"></a>
+        <a href="${MP_CATALOG.wb}" target="_blank" rel="noopener" title="Wildberries">Купить <img src="img/marketplace/wb.png" alt="Wildberries"></a>
+        <a href="${MP_CATALOG.ym}" target="_blank" rel="noopener" title="Яндекс Маркет">Купить <img src="img/marketplace/market.png" alt="Яндекс Маркет"></a>
+      </div>
+    </div>
+  `;
+  document.getElementById('texturesGrid').innerHTML = cards + moreColorsCard;
   observeReveals();
 }
 
@@ -743,6 +1028,10 @@ function renderQuiz() {
         Укажите email — отправим подборку текстур под ваш проект и промокод −10% для Ozon, Wildberries или Яндекс Маркет
       </p>
       <input class="quiz-email-input" type="email" placeholder="your@email.com" id="quizEmail" oninput="checkQuizEmail()">
+      <label class="consent-label">
+        <input type="checkbox" id="quizConsent" onchange="checkQuizEmail()">
+        Нажимая кнопку, я даю согласие на обработку персональных данных в соответствии с <a href="#" onclick="event.preventDefault();event.stopPropagation();openPrivacy()">Политикой конфиденциальности</a> и ФЗ №152 «О персональных данных»
+      </label>
       <button class="quiz-submit" id="quizSubmitBtn" disabled onclick="submitQuiz()">Получить подборку</button>`;
   }
 }
@@ -759,16 +1048,51 @@ function quizSelect(key, val) {
 
 function checkQuizEmail() {
   const email = document.getElementById('quizEmail').value;
-  document.getElementById('quizSubmitBtn').disabled = !email || !email.includes('@');
+  const consent = document.getElementById('quizConsent') && document.getElementById('quizConsent').checked;
+  document.getElementById('quizSubmitBtn').disabled = !email || !email.includes('@') || !consent;
+}
+
+// URL веб-приложения Google Apps Script после Deploy (см. google-apps-script/Code.gs)
+const GS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwb9G7kwoZKfLRqt6juX5JBHS8EvCe361_PI54xTikzYGuBAhF7xObTdRFZuUoJmE727Q/exec';
+
+function sendToGoogleSheets(data, onSuccess) {
+  if (!GS_WEBAPP_URL || GS_WEBAPP_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
+    console.log('Lead (Google Sheets не настроен):', data);
+    if (onSuccess) onSuccess();
+    return;
+  }
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = GS_WEBAPP_URL;
+  form.target = 'gsLeadsFrame';
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'payload';
+  input.value = JSON.stringify(data);
+  form.appendChild(input);
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
+  if (onSuccess) onSuccess();
 }
 
 function submitQuiz() {
   const email = document.getElementById('quizEmail').value;
   if (email && email.includes('@')) {
-    // Here: send quizAnswers + email to your backend / Google Sheets / webhook
-    console.log('Quiz lead:', { ...quizAnswers, email });
-    quizDone = true;
-    renderQuiz();
+    const data = { ...quizAnswers, email, source: 'quiz_form', timestamp: new Date().toISOString() };
+    sendToGoogleSheets(data, () => { quizDone = true; renderQuiz(); });
+  }
+}
+
+// ── PRIVACY MODAL ──
+function openPrivacy() {
+  document.getElementById('privacyOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closePrivacy() {
+  document.getElementById('privacyOverlay').classList.remove('open');
+  if (!document.getElementById('quizOverlay').classList.contains('open')) {
+    document.body.style.overflow = '';
   }
 }
 
